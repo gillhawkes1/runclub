@@ -28,7 +28,7 @@ client.login(DISCORD_TOKEN);
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
-
+/* 
 
 console.log('this is a test');
 
@@ -57,3 +57,4 @@ const rest = new REST({ version: '10' }).setToken('XAMwGCLqNjCC-7p_KNy2ce__uHG-y
   }
 })();
 
+ */
