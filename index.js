@@ -33,10 +33,10 @@ client.on('interactionCreate', async interaction => {
       await interaction.reply('Pong!');
       break;
     case 'server':
-      await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
+      await interaction.reply('Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}');
       break;
     case 'user':
-      await interaction.reply('user response yo');
+      await interaction.reply('Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}');
       break;
     case 'test':
       await interaction.reply('mmmmmMMMMMMMMOOOOOOOOOOOOOOOO');

@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+/* const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 //dotenv import
@@ -31,9 +31,9 @@ client.on('interactionCreate', async interaction => {
   }
 
   if (interaction.commandName === 'user') {
-    await interaction.reply('user response yo');
+    await interaction.reply(`Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`);
   }
 
 });
 
-client.login(envvars.DISCORD_TOKEN);
+client.login(envvars.DISCORD_TOKEN); */
