@@ -4,8 +4,18 @@ const { SlashCommandBuilder, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 
 
-//do i need to define vars commented out?
-const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN } = require("dotenv").config();
+//dotenv import
+//const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN } = require("dotenv").config();
+/* import 'dotenv/config'
+dotenv.config()
+import express from 'express' */
+//import env vars
+require("dotenv").config();
+const dotenv = require('dotenv')
+//const variableExpansion = require('dotenv-expand')
+const myEnv = dotenv.config()
+//variableExpansion(myEnv)
+
 
 
 const commands = [
@@ -15,8 +25,8 @@ const commands = [
 ]
 	.map(command => command.toJSON());
 
-const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(dotenv.DISCORD_TOKEN);
 
-rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands })
+rest.put(Routes.applicationGuildCommands(dotenv.CLIENT_ID, dotenv.GUILD_ID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);

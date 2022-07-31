@@ -2,6 +2,11 @@
 
 //import env vars
 require("dotenv").config();
+const dotenv = require('dotenv')
+//const variableExpansion = require('dotenv-expand')
+const myEnv = dotenv.config()
+//variableExpansion(myEnv)
+
 
 const { Client, GatewayIntentBits } = require('discord.js');
 
@@ -15,7 +20,7 @@ client.once('ready', () => {
 });
 
 //login with the token
-client.login(DISCORD_TOKEN);
+client.login(dotenv.DISCORD_TOKEN);
 
 console.log('we have logged in');
 
