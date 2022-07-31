@@ -17,6 +17,8 @@ client.once('ready', () => {
 //login with the token
 client.login(DISCORD_TOKEN);
 
+console.log('we have logged in');
+
 /* client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
