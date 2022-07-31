@@ -33,16 +33,13 @@ client.on('interactionCreate', async interaction => {
       await interaction.reply('Pong!');
       break;
     case 'server':
-      await interaction.reply('Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}');
+      await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
       break;
     case 'user':
-      await interaction.reply('Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}');
+      await interaction.reply(`Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`);
       break;
     case 'test':
       await interaction.reply('mmmmmMMMMMMMMOOOOOOOOOOOOOOOO');
-      setTimeout(() => {
-        await interaction.reply('test response. 2 sec delay');
-      },2000)
     default:
       await interaction.reply('That command doesn\'t exist.');
   }
