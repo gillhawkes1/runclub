@@ -34,8 +34,9 @@ client.on('interactionCreate', async interaction => {
       break;
     case 'test':
       await interaction.reply('mmmmmMMMMMMMMOOOOOOOOOOOOOOOO');
+      break;
     default:
-      await interaction.reply('That command doesn\'t exist.');
+      return;
   }
 
 });
