@@ -7,7 +7,6 @@ const dotenv = require('dotenv')
 const myEnv = dotenv.config()
 //variableExpansion(myEnv)
 
-
 const { Client, GatewayIntentBits } = require('discord.js');
 
 //create client instance
@@ -17,10 +16,11 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.once('ready', () => {
   console.log('ready!~!~@! sheesh');
   console.log(`Logged in as ${client.user.tag}!`);
+  require('bessie.js');
 });
 
 //login with the token
-client.login(dotenv.DISCORD_TOKEN);
+client.login(myEnv.parsed.DISCORD_TOKEN);
 
 console.log('we have logged in');
 

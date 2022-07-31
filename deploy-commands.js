@@ -13,9 +13,8 @@ import express from 'express' */
 require("dotenv").config();
 const dotenv = require('dotenv')
 //const variableExpansion = require('dotenv-expand')
-const myEnv = dotenv.config()
+const myEnv = dotenv.config();
 //variableExpansion(myEnv)
-
 
 
 const commands = [
@@ -25,8 +24,8 @@ const commands = [
 ]
 	.map(command => command.toJSON());
 
-const rest = new REST({ version: '10' }).setToken(dotenv.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(myEnv.parsed.DISCORD_TOKEN);
 
-rest.put(Routes.applicationGuildCommands(dotenv.CLIENT_ID, dotenv.GUILD_ID), { body: commands })
+rest.put(Routes.applicationGuildCommands(myEnv.parsed.CLIENT_ID, myEnv.parsed.GUILD_ID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);

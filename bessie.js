@@ -1,3 +1,4 @@
+console.log('bessie.js was called!');
 /* 
 const { Client, GatewayIntentBits } = require('discord.js');
 
