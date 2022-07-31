@@ -1,4 +1,4 @@
-
+/* 
 const { Client, GatewayIntentBits } = require('discord.js');
 
 //import env vars
@@ -18,4 +18,4 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login(DISCORD_TOKEN);
+client.login(DISCORD_TOKEN); */
