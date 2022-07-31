@@ -1,11 +1,10 @@
 //begin app
 
-//import env vars
+//dotenv import
 require("dotenv").config();
 const dotenv = require('dotenv')
-//const variableExpansion = require('dotenv-expand')
 const myEnv = dotenv.config()
-//variableExpansion(myEnv)
+const envvars = myEnv.parsed;
 
 const { Client, GatewayIntentBits } = require('discord.js');
 
@@ -14,15 +13,57 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 //when client is ready, run this code
 client.once('ready', () => {
-  console.log('ready!~!~@! sheesh');
+  console.log('Ready!');
   console.log(`Logged in as ${client.user.tag}!`);
-  require('bessie.js');
+
+  //require('bessie.js');
 });
 
 //login with the token
-client.login(myEnv.parsed.DISCORD_TOKEN);
+client.login(envvars.DISCORD_TOKEN);
 
-console.log('we have logged in');
+//COMMAND RESPONSES
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const { commandName } = interaction;
+
+  switch(commandName){
+    case 'ping':
+      await interaction.reply('Pong!');
+      break;
+    case 'server':
+      await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
+      break;
+    case 'user':
+      await interaction.reply('user response yo');
+      break;
+    case 'test':
+      await interaction.reply('mmmmmMMMMMMMMOOOOOOOOOOOOOOOO');
+      setTimeout(() => {
+        await interaction.reply('test response. 2 sec delay');
+      },2000)
+    default:
+      await interaction.reply('That command doesn\'t exist.');
+  }
+
+});
+
+client.login(envvars.DISCORD_TOKEN);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
