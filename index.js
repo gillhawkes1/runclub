@@ -1,4 +1,5 @@
-//begin app
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 //dotenv import
 require("dotenv").config();
@@ -6,10 +7,6 @@ const dotenv = require('dotenv')
 const myEnv = dotenv.config()
 const envvars = myEnv.parsed;
 
-const { Client, GatewayIntentBits } = require('discord.js');
-
-//create client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 //when client is ready, run this code
 client.once('ready', () => {
@@ -19,16 +16,13 @@ client.once('ready', () => {
   //require('bessie.js');
 });
 
-//login with the token
-client.login(envvars.DISCORD_TOKEN);
-
 //COMMAND RESPONSES
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
   const { commandName } = interaction;
 
-  switch(commandName){
+/*   switch(commandName){
     case 'ping':
       await interaction.reply('Pong!');
       break;
@@ -42,6 +36,10 @@ client.on('interactionCreate', async interaction => {
       await interaction.reply('mmmmmMMMMMMMMOOOOOOOOOOOOOOOO');
     default:
       await interaction.reply('That command doesn\'t exist.');
+  } */
+
+  if (interaction.commandName === 'server') {
+    await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
   }
 
 });
