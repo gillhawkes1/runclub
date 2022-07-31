@@ -5,8 +5,7 @@ const { REST } = require('@discordjs/rest');
 
 
 //do i need to define vars commented out?
-require("dotenv").config();
-//const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN } = 
+const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN } = require("dotenv").config();
 
 
 const commands = [
