@@ -2,8 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('ping')
-		.setDescription('Replies with Pong!'),
+		.setName('server')
+		.setDescription(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`),
 	async execute(interaction) {
 		await interaction.reply('Pong!');
 	},

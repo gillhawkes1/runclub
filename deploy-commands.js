@@ -1,23 +1,26 @@
 //a file for command deployment management
-
-const { SlashCommandBuilder, Routes } = require('discord.js');
+const fs = require('node:fs');
+const path = require('node:path');
+const { Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 
-
-//dotenv import
-require("dotenv").config();
-const dotenv = require('dotenv')
-const myEnv = dotenv.config()
-const envvars = myEnv.parsed;
+//protected vars import
+const varfile = require('dotenv');
+const configfile = varfile.config();
+const envvars = configfile.parsed;
 
 
-const commands = [
-	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
-	new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
-	new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
-	new SlashCommandBuilder().setName('test').setDescription('Test bessie\'s power'),
-]
-	.map(command => command.toJSON());
+//-----------CREATE AND MAP COMMANDS FOR UPLOAD TO DISCORD------------
+
+const commands = [];
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
+}
 
 const rest = new REST({ version: '10' }).setToken(envvars.DISCORD_TOKEN);
 

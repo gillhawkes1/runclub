@@ -5,6 +5,8 @@ module.exports = {
 		.setName('totalmiles')
 		.setDescription('Not finished yet!'),
 	async execute(interaction) {
+
+        //interaction.client is the accessor to the client instance inside command files
 		await interaction.reply('not ready yet');
 	},
 };
