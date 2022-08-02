@@ -4,11 +4,12 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 //protected vars import
-const envvars = require('dotenv').config.parsed;
-//const envvars = myEnv.parsed;
+const varfile = require('dotenv');
+const configfile = varfile.config();
+const envvars = configfile.parsed;
 
 //client properties
-client.commands = new Collection();
+//client.commands = new Collection();
 
 //when client is ready, run this code
 client.once('ready', () => {
