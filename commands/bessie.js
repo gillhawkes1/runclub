@@ -7,11 +7,11 @@ module.exports = {
 
 	async execute(interaction) {
     const self = this;
-    var joke = self.jokes[Math.floor(Math.random()*self.jokes.length)];
-		await interaction.reply(joke);
+    var tip = self.tips[Math.floor(Math.random()*self.tips.length)];
+		await interaction.reply(self.tips[10]);
 	},
 
-  jokes: Array(
+  tips: Array(
     'Don\'t run into a wall.',
     'Wear your runclub shirt for $1 off on Tuesdays.',
     'Come run in the rain for double miles rewards.',
@@ -22,7 +22,7 @@ module.exports = {
     'If Kevin was 3 minutes late, everything is normal.',
     'I wish they would let me behind the bar but I\'m too big.',
     'Come to Food Truck Friday\'s!',
-    
+    '<b>this is a test.</b>'
   ),
 
 };
