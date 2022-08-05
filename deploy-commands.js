@@ -10,7 +10,7 @@ const configfile = varfile.config();
 const envvars = configfile.parsed;
 
 
-//-----------CREATE AND MAP COMMANDS FOR UPLOAD TO DISCORD------------
+//-----------BUILD COMMANDS FOR UPLOAD TO DISCORD------------
 
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');

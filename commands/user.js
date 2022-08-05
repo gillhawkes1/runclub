@@ -3,8 +3,14 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('user')
-		.setDescription(`Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`),
+		.setDescription('Get user information'),
 	async execute(interaction) {
-		await interaction.reply('Pong!');
+		let name = this.returnName(interaction);
+		await interaction.reply(name);
 	},
+	returnName(str){
+		console.log('this is a test. it should print something below this. below that should be server info');
+		console.log(str);
+		return 'Hello, ' + str.member.nickname + '! ';
+	}
 };
