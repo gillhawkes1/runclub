@@ -19,11 +19,14 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+module.exports = {
+	data: [client.commands],
+}
+
 //when client is ready, run this code
 client.once('ready', () => {
-  console.log('Ready!');
-  console.log(`Logged in as ${client.user.tag}!`);
-  //const myCommands = require('./commands');
+	console.log('Ready!');
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
 //command execution

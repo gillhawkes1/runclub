@@ -8,7 +8,7 @@ module.exports = {
 	async execute(interaction) {
     const self = this;
     var tip = self.tips[Math.floor(Math.random()*self.tips.length)];
-		await interaction.reply(self.tips[10]);
+		await interaction.reply(tip);
 	},
 
   tips: Array(
@@ -16,13 +16,12 @@ module.exports = {
     'Wear your runclub shirt for $1 off on Tuesdays.',
     'Come run in the rain for double miles rewards.',
     'You can redeem your rewards at the bar.',
-    'If the heat index is over 95F, 2x miles.',
+    'If the heat index is over 95F, it\'s 2x miles.',
     'Fun fact: I\'m a cowputer.',
     'MOO',
     'If Kevin was 3 minutes late, everything is normal.',
     'I wish they would let me behind the bar but I\'m too big.',
     'Come to Food Truck Friday\'s!',
-    '<b>this is a test.</b>'
   ),
 
 };
