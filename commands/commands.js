@@ -15,7 +15,6 @@ module.exports = {
 		var commandsList = '';
 		const commands = [];
 		const commandsPath = path.join('C:/Users/Gill/workspace/runclub/', 'commands');
-		console.log(commandsPath);
 		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	
 		//build commands list
@@ -30,10 +29,9 @@ module.exports = {
 				commandsList += ' **' + command.data.options.length + '** Option(s): \n';
 				var ct = 0;
 				for (const opt of command.data.options){
-					console.log(opt);
-					commandsList += '        **' + opt.name + '** -> ' + opt.description;
-					ct++;
-					if(ct !== command.data.options.length){
+					const req = opt.required ? ' (required)' : '';
+					commandsList += '        **' + opt.name + req + '** -> ' + opt.description;
+					if(command.data.options.indexOf(opt) == command.data.options.length){
 						commandsList += '\n';
 					}
 				}
