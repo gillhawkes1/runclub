@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('user')
-		.setDescription('Get user information'),
+		.setDescription('Get user information.'),
 	async execute(interaction) {
 		let name = this.returnName(interaction);
 		await interaction.reply(name);

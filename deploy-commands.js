@@ -10,7 +10,7 @@ const configfile = varfile.config();
 const envvars = configfile.parsed;
 
 
-//-----------BUILD COMMANDS FOR UPLOAD TO DISCORD------------
+//-----------BUILD COMMANDS FOR UPLOAD TO DISCORD------------//
 
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
@@ -27,3 +27,5 @@ const rest = new REST({ version: '10' }).setToken(envvars.DISCORD_TOKEN);
 rest.put(Routes.applicationGuildCommands(envvars.CLIENT_ID, envvars.GUILD_ID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);
+
+//module.exports.commands = commands;

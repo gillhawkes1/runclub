@@ -19,10 +19,6 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-module.exports = {
-	data: [client.commands],
-}
-
 //when client is ready, run this code
 client.once('ready', () => {
 	console.log('Ready!');
