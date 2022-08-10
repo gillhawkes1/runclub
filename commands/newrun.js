@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = require('./../client_secret.json')
+const creds = require('./../client_secret.json');
+const { commands } = require('./../deploy-commands.js')
 
 //protected vars import
 const varfile = require('dotenv');
@@ -28,6 +29,8 @@ module.exports = {
 		const name = interaction.options.getString('name');
 		const distance = interaction.options.getString('distance');
 		const time = interaction.options.getString('time');
+		console.log('commands');
+		console.log(commands);
 
 		this.accessSheet(envvars.BOOK_NEW_RUN,name).then((sheet)=>{
 			//make sure sheet exists, then make record. if not, create sheet and make record
