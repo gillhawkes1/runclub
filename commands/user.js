@@ -10,7 +10,6 @@ module.exports = {
 	},
 	returnName(str){
 		console.log('this is a test. it should print something below this. below that should be server info');
-		console.log(str);
 		return 'Hello, ' + str.member.nickname + '! ';
 	}
 };
