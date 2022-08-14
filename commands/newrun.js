@@ -11,53 +11,64 @@ const envvars = configfile.parsed;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('newrun')
-		.setDescription('Information about the options provided.')
+		.setDescription('Record a new run!')
 		.addStringOption(option => 
             option.setName('name')
             .setDescription('First and last name')
             .setRequired(true))
- 		.addStringOption(option => 
+ 		.addNumberOption(option => 
             option.setName('distance')
             .setDescription('Run distance')
             .setRequired(true))
 		.addStringOption(option => 
             option.setName('time')
-            .setDescription('Total run time')
-            .setRequired(true)),
+            .setDescription('Total run time. Use format minutes:seconds (20:35)')
+            .setRequired(true))
+		.addStringOption(option => 
+			option.setName('comment')
+			.setDescription('A brief comment about your run')
+			.setRequired(false)),
 
 	async execute(interaction) {
-		const name = interaction.options.getString('name');
-		const distance = interaction.options.getString('distance');
+
+		const name = interaction.options.getString('name').toLowerCase();
+		const distance = interaction.options.getNumber('distance');
 		const time = interaction.options.getString('time');
-		this.accessSheet(envvars.BOOK_NEW_RUN,name).then((sheet)=>{
-			//make sure sheet exists, then make record. if not, create sheet and make record
-			if(sheet != undefined){
-				console.log('it is in fact a sheet. sheet = object');
+		const comment = interaction.options.getString('comment');
+		const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
+
+		//if they are in the system already and have a sheet for their runs 
+		if(sheet != undefined){
+			const rows = await sheet.getRows();
+			const lastRun = rows.length-1;
+
+			//if they already recorded a run for the day
+			if(rows[lastRun].date == util.getToday()){
+				return interaction.reply('Heife sees all, and she sees you trying to record more than one run for today. No no no, not today.');
+
+			//verification that they have not recorded a run for the day yet
 			}else{
-				console.log('nah dawg. sheet = undefined');
+				const fname = name.split(' ')[0];
+				const lname = name.split(' ')[1];
+				const today = util.getToday();
+				
+				const newRunRow = {
+					date: today,
+					fname: fname,
+					lname: lname,
+					distance: distance,
+					time: time,
+					comment: comment,
+					multiplier: 1
+				}
+	
+				await util.addRowToSheet(envvars.BOOK_NEW_RUN,name,newRunRow);
+				return interaction.reply('Run recorded successfully.');
 			}
-		});
 
-		if (name && distance && time) return interaction.reply(`Your run will be recorded as: \`${name}\` + \`${distance}\` + \`${time}\``);
-		return interaction.reply('No option was provided!');
-	},
-
-	//try to get a sheet 
-	async accessSheet(bookid,sheetname=false){
-		const doc = new GoogleSpreadsheet(bookid);
-		await doc.useServiceAccountAuth({
-			client_email: creds.client_email,
-			private_key: creds.private_key
-		});
-		await doc.loadInfo().catch((error) => {
-			console.log(error);
-			console.log('error occurred in catch');
-			return false;
-		})
-		const sheet = doc.sheetsByTitle[sheetname];
-		return sheet;
-	},
-
-	recordRun(docid,data){
+		//else if they are not in the system yet (they don't have a sheet to record their runs)
+		}else{
+			return interaction.reply('You are not in the system yet. Please use the /addme command to add yourself into the system, then record your run with /newrun.');
+		}
 	},
 };

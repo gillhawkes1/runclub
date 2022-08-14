@@ -31,7 +31,7 @@ module.exports = {
 				for (const opt of command.data.options){
 					const req = opt.required ? ' (required)' : '';
 					commandsList += '        **' + opt.name + req + '** -> ' + opt.description;
-					if(command.data.options.indexOf(opt) == command.data.options.length){
+					if(command.data.options.indexOf(opt) != command.data.options.length-1){
 						commandsList += '\n';
 					}
 				}
