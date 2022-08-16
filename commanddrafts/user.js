@@ -9,7 +9,6 @@ module.exports = {
 		await interaction.reply(name);
 	},
 	returnName(str){
-		console.log('this is a test. it should print something below this. below that should be server info');
 		return 'Hello, ' + str.member.nickname + '! ';
 	}
 };

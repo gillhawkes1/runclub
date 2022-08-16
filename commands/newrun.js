@@ -1,6 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = require('./../client_secret.json');
 const util = require('./../utility.js');
 
 //protected vars import
@@ -44,7 +42,7 @@ module.exports = {
 
 			//if they already recorded a run for the day
 			if(rows[lastRun].date == util.getToday()){
-				return interaction.reply('Heife sees all, and she sees you trying to record more than one run for today. No no no, not today.');
+				return interaction.reply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');
 
 			//verification that they have not recorded a run for the day yet
 			}else{
@@ -68,7 +66,7 @@ module.exports = {
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
-			return interaction.reply('You are not in the system yet. Please use the /addme command to add yourself into the system, then record your run with /newrun.');
+			return interaction.reply('You are not in the system yet. Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
 		}
 	},
 };

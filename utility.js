@@ -34,6 +34,10 @@ module.exports = {
 		const yyyy = today.getFullYear();
 		today = mm + '/' + dd + '/' + yyyy;
 		return today;
+	},
+
+	capitalizeFirstLetter(string){
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
 
