@@ -9,6 +9,6 @@ module.exports = {
 		await interaction.reply(name);
 	},
 	returnName(str){
-		return 'Hello, ' + str.member.nickname + '! ';
+		return 'Hello, ' + str.member.nickname + '! :cow:';
 	}
 };
