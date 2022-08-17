@@ -20,35 +20,27 @@ module.exports = {
 			name = name.toLowerCase();
 		}
 		
-		if(name){
+		if(name.split(' ').length > 1){
 			const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
 			if(sheet != undefined){
 				const rows = await sheet.getRows();
-				let totals = { distance: 0, name: name, weeks: rows.length-1 };
-				for(let i = 0; i < rows.length; i++){
-					console.log(rows[i].distance);
-					totals.distance += parseFloat(rows[i].distance);
+				if(rows.length > 0){
+					let totals = { distance: 0, name: name, weeks: rows.length-1 };
+					for(let i = 0; i < rows.length; i++){
+						console.log(rows[i].distance);
+						totals.distance += parseFloat(rows[i].distance);
+					}
+					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
+					miles = miles == -1 ? 0 : miles;
+					await interaction.reply(`You have ran ${ miles } miles over ${ totals.weeks } weeks.`);	
+				}else{
+					await interaction.reply('You don\'t have any records yet.');
 				}
-				await interaction.reply(`You have ran ${ Math.round((totals.distance + Number.EPSILON) * 100) / 100 } miles over ${ totals.weeks } weeks.`);
 			}else{
-				await interaction.reply('You don\'t have any records yet.');
+				await interaction.reply('You don\'t have any records yet. Register yourself with **/addme**.');
 			}
-		}/* else{
-			const sheet = await util.getSheet(envvars.BOOK_RUN_TOTALS,'2021-2022');
-			const rows = await sheet.getRows();
-			let response = '';
-			for(let i = 0; i < 11; i++){
-				let fname = util.capitalizeFirstLetter(rows[i].fname);
-				let lname = util.capitalizeFirstLetter(rows[i].lname);
-				let distance = rows[i].mileage;
-				let weeks = rows[i].weeks;
-				response += fname + ' ' + lname + '\n';
-				response += distance + 'mi \n';
-				response += weeks + ' weeks \n';
-				response += '---------------------- \n';
-			}
-			console.log(response.length)
-			await interaction.reply({ content: response, ephemeral: true});
-		} */
+		}else{
+			await interaction.reply('Please enter first and last name.');
+		}
 	},
 };

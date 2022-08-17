@@ -38,11 +38,13 @@ module.exports = {
 		//if they are in the system already and have a sheet for their runs 
 		if(sheet != undefined){
 			const rows = await sheet.getRows();
-			const lastRun = rows.length-1;
+			if(rows.length > 0){
+				const lastRun = rows.length-1;
 
-			//if they already recorded a run for the day
-			if(rows[lastRun].date == util.getToday()){
-				return interaction.reply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');
+				//if they already recorded a run for the day
+				if(rows[lastRun].date == util.getToday()){
+					return interaction.reply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');				
+				}
 
 			//verification that they have not recorded a run for the day yet
 			}else{

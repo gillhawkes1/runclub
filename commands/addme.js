@@ -17,7 +17,7 @@ module.exports = {
             .setRequired(true)),
 	async execute(interaction) {
         const name = interaction.options.getString('name').toLowerCase();
-        if(name.split(' ').length != 1){
+        if(name.split(' ').length < 2){
             return interaction.reply('Please enter both first and last name when using /addme.');
         }
         const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
