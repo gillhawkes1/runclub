@@ -35,9 +35,11 @@ module.exports = {
 		const comment = interaction.options.getString('comment');
 		const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
 
-		//if they are in the system already and have a sheet for their runs 
+		//if their sheet exists 
 		if(sheet != undefined){
 			const rows = await sheet.getRows();
+
+			//if sheet has rows
 			if(rows.length > 0){
 				const lastRun = rows.length-1;
 

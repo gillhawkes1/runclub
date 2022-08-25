@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
+const sd = require('./../staticdata.js');
 
 
 //protected vars import
@@ -18,9 +19,10 @@ module.exports = {
 	async execute(interaction) {
         const name = interaction.options.getString('name').toLowerCase();
         if(name.split(' ').length < 2){
-            return interaction.reply('Please enter both first and last name when using /addme.');
+            return interaction.reply('Please enter both first and last name when using **/addme**.');
         }
         const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
+        const fname = name.split(' ')[0];
 
         //verify sheet does not exist, then add sheet
         if(sheet == undefined){
@@ -28,12 +30,13 @@ module.exports = {
 
             //add sheet to new run book
             await util.addSheet(envvars.BOOK_NEW_RUN,name,headers);
-            console.log('added new sheet');
-			return interaction.reply('You are now in the system. Record a run with /newrun!');
+
+            console.log('added new sheet for : '+ name);
+			return interaction.reply(util.randIndex(sd.data.greeting) + ', ' + util.capitalizeFirstLetter(fname) + '! Record a run with **/newrun**!');
     
         //else they are already in the system trying to add themselves again
         }else{
-			return interaction.reply('Nice try; you are already in the system!');
+			return interaction.reply(fname + ', you are already in the system!');
         }
 	},
 };

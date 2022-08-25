@@ -27,18 +27,33 @@ module.exports = {
         return interaction.member.roles.cache.some(role => role.name === `${roleType}`);
     },
 
+	randIndex(array){
+		return array[Math.floor(Math.random()*array.length)];
+	},
+
 	getToday(){
 		let today = new Date();
 		const dd = String(today.getDate()).padStart(2, '0');
-		const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		const mm = String(today.getMonth() + 1).padStart(2, '0'); //jan is 0
 		const yyyy = today.getFullYear();
 		today = mm + '/' + dd + '/' + yyyy;
 		return today;
 	},
 
 	capitalizeFirstLetter(string){
-		return string.charAt(0).toUpperCase() + string.slice(1);
+		if (string.indexOf(' ') >= 0) {
+			console.log(string.split(''));
+			let nextCap = true;
+			let output = '';
+			for (let letter of string.split('')) {
+				letter = nextCap ? letter.toUpperCase() : letter;
+				output += letter;
+				nextCap = letter == ' ' ? true : false;
+			}
+			return output;
+		} else {
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		}
 	}
-
 
 }
