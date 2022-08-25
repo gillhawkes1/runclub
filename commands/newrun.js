@@ -20,7 +20,7 @@ module.exports = {
             .setRequired(true))
 		.addStringOption(option => 
             option.setName('time')
-            .setDescription('Total run time. Use format minutes:seconds (20:35)')
+            .setDescription('Total run time. Format-> mm:ss (ex. 20:35)')
             .setRequired(true))
 		.addStringOption(option => 
 			option.setName('comment')
