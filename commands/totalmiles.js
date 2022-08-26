@@ -16,6 +16,7 @@ module.exports = {
             .setRequired(true)),
 	async execute(interaction) {
 		let name = interaction.options.getString('name');
+		const fname = name.split(' ')[0];
 		if(name){
 			name = name.toLowerCase();
 		}
@@ -32,7 +33,7 @@ module.exports = {
 					}
 					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
 					const time = rows.length == 1 ? 'week' : 'weeks';
-					await interaction.reply(`You have ran ${miles} miles over ${totals.weeks} ${time}.`);	
+					await interaction.reply(`${util.capitalizeFirstLetter(fname)} has ran ${miles} miles over ${totals.weeks} ${time}.`);	
 				}else{
 					await interaction.reply('You don\'t have any records yet. Get out there and run!');
 				}
