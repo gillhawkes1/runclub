@@ -27,26 +27,22 @@ module.exports = {
             i++;
         }
         const pChance = util.randIndex(chance);
-        console.log(pChance);
         let reaction = '';
         switch (true) {
-            case (pChance > 0 && pChance <= 33):
-                console.log('bad');
+            case (pChance > 0 && pChance <= 40):
                 reaction = util.randIndex(sd.data.reactions.bad);
                 break;
-            case (pChance > 33 && pChance <= 67):
-                console.log('ok');
-                reaction = util.randIndex(sd.data.reactions.ok);               
+            case (pChance > 40 && pChance <= 69):
+                reaction = util.randIndex(sd.data.reactions.ok);    
+                reaction = pChance == 69 ? 'Nice.' : reaction;           
                 break;
-            case (pChance > 67 && pChance <= 100):
-                console.log('good');
+            case (pChance > 69 && pChance <= 100):
                 reaction = util.randIndex(sd.data.reactions.good);
-                reaction = pChance == 69 ? 'Nice.' : reaction;
                 break;
             default:
+                reaction = 'Well I\'m somehow answsering this.';
                 break;
         }
-        //const reactLevel = util.randIndex(sd.data.reactions.reactLevel);
         return interaction.reply('`' + question + '` \nHeife says ' + pChance + '%. ' + reaction);
         }
     }
