@@ -24,7 +24,6 @@ module.exports = {
         let chance = [];
         for(let i = 0; i < 101; i++){
             chance.push(i);
-            i++;
         }
         const pChance = util.randIndex(chance);
         let reaction = '';
