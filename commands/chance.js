@@ -2,12 +2,6 @@ const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
 const sd = require('./../staticdata.js');
 
-
-//protected vars import
-const varfile = require('dotenv');
-const configfile = varfile.config();
-const envvars = configfile.parsed;
-
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chance')
@@ -39,7 +33,7 @@ module.exports = {
                 reaction = util.randIndex(sd.data.reactions.good);
                 break;
             default:
-                reaction = 'Well I\'m somehow answsering this.';
+                reaction = 'Well I\'m somehow answering this.';
                 break;
         }
         return interaction.reply('`' + question + '` \nHeife says ' + pChance + '%. ' + reaction);
