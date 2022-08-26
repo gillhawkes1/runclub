@@ -52,7 +52,58 @@ module.exports = {
 		newRunResponse: [
 			'Good work! Enjoy your drink :beers:',
 			'Nice job!'
-		]
+		],
 
+		reactions: {
+			bad: [
+				'Yeesh.',
+				'Sorry my friend.',
+				'Yikes.',
+				'Oh no!',
+				'Not looking good.',
+				'That\'s not what you want to see.',
+				'lol.',
+				'lmao.',
+				'Try again?',
+				'Not gonna happen',
+				'Probs nah.',
+				'Yeah no.',
+				'You\'re not getting a moo out of me for that one.',
+				'Not likely.',
+				'Try again tomorrow.',
+			],
+
+			ok: [
+				'We can work with that.',
+				'Not too shabby.',
+				'Alright.',
+				'Not great, not terrible.',
+				'Could be worse. You could be a cowputer.',
+				'Come on, not that terrible.',
+				'Could go either way.',
+				'Maybe.',
+				'Mooby, just mooby',
+				'Eh. Eeeh.',
+				'Average.',
+				'Not sure.',
+				'I dunno.',
+				'Mmmmmmmooooooooo. Unsure.'
+			],
+
+			good:[
+				'That\'s pretty likely.',
+				'Most likely!',
+				'Honestly, it looks good to me.',
+				'Probs ya.',
+				'That is true my friend.',
+				'Yes.',
+				'Likely!',
+				':muscle: :cow:',
+				'Now that is a high chance.',
+				'Wow!',
+				'Yup yup.',
+				'Duhyeah.',
+			]
+		}
     }
 }
