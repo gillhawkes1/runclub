@@ -32,7 +32,7 @@ module.exports = {
             await util.addSheet(envvars.BOOK_NEW_RUN,name,headers);
 
             console.log('added new sheet for : '+ name);
-			return interaction.reply(util.randIndex(sd.data.greeting) + ', ' + util.capitalizeFirstLetter(fname) + '! Record a run with **/newrun**!');
+			return interaction.reply(util.randIndex(sd.data.greeting) + ' ' + util.capitalizeFirstLetter(fname) + '! Record a run with **/newrun**!');
     
         //else they are already in the system trying to add themselves again
         }else{
