@@ -42,7 +42,6 @@ module.exports = {
 
 	capsFirst(string){
 		if (string.indexOf(' ') >= 0) {
-			console.log(string.split(''));
 			let nextCap = true;
 			let output = '';
 			for (let letter of string.split('')) {

@@ -13,7 +13,5 @@ module.exports = {
         console.log(interaction.user.id,name)
 		await interaction.reply('Thanks! :cow:');
 	},
-	returnName(str){
-		return 'Hello, ' + str.member.nickname + '! :cow:';
-	}
+
 };
