@@ -15,6 +15,7 @@ module.exports = {
             .setDescription('first and last name of the runner')
             .setRequired(true)),
 	async execute(interaction) {
+		await interaction.deferReply();
 		let name = interaction.options.getString('name');
 		const fname = name.split(' ')[0];
 		if(name){
@@ -32,15 +33,15 @@ module.exports = {
 					}
 					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
 					const plural = rows.length == 1 ? 'week' : 'weeks';
-					await interaction.reply(`${util.capsFirst(fname)} has ran ${miles} miles over ${totals.weeks} ${plural}.`);	
+					await interaction.editReply(`${util.capsFirst(fname)} has ran ${miles} miles over ${totals.weeks} ${plural}.`);	
 				}else{
-					await interaction.reply('You don\'t have any records yet. Get out there and run!');
+					await interaction.editReply('You don\'t have any records yet. Get out there and run!');
 				}
 			}else{
-				await interaction.reply('You don\'t have any records yet. Register yourself with **/addme**.');
+				await interaction.editReply('You don\'t have any records yet. Register yourself with **/addme**.');
 			}
 		}else{
-			await interaction.reply('Please enter first and last name.');
+			await interaction.editReply('Please enter first and last name.');
 		}
 	},
 };

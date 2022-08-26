@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { sd } = require('./../staticdata.js');
+const util = require('./../utility.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,9 +8,6 @@ module.exports = {
 		.setDescription('Get user information.'),
 	async execute(interaction) {
 		let name = this.returnName(interaction);
-		await interaction.reply(name + ' ' + sd.greeting);
+		await interaction.reply(util.randIndex(sd.greeting) + ' ' + name);
 	},
-	returnName(str){
-		return 'Hello, ' + str.member.nickname + '! :cow:';
-	}
 };

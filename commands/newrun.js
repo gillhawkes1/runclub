@@ -29,7 +29,7 @@ module.exports = {
 			.setRequired(false)),
 
 	async execute(interaction) {
-
+		await interaction.deferReply();
 		const name = interaction.options.getString('name').toLowerCase();
 		const distance = interaction.options.getNumber('distance');
 		const time = interaction.options.getString('time');
@@ -46,7 +46,7 @@ module.exports = {
 
 				//if they already recorded a run for the day
 				if(rows[lastRun].date == util.getToday()){
-					return interaction.reply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');				
+					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');				
 				}
 
 			//verification that they have not recorded a run for the day yet
@@ -66,12 +66,12 @@ module.exports = {
 				}
 	
 				await util.addRowToSheet(envvars.BOOK_NEW_RUN,name,newRunRow);
-				return interaction.reply(util.randIndex(sd.newRunResponse.salute + ' ' + sd.newRunResponse.remark));
+				return interaction.editReply(util.randIndex(sd.newRunResponse.salute + ' ' + sd.newRunResponse.remark));
 			}
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
-			return interaction.reply('You are not in the system yet. Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
+			return interaction.editReply('You are not in the system yet. Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
 		}
 	},
 };
