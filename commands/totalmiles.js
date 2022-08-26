@@ -33,7 +33,7 @@ module.exports = {
 					}
 					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
 					const time = rows.length == 1 ? 'week' : 'weeks';
-					await interaction.reply(`${util.capitalizeFirstLetter(fname)} has ran ${miles} miles over ${totals.weeks} ${time}.`);	
+					await interaction.reply(`${util.capsFirst(fname)} has ran ${miles} miles over ${totals.weeks} ${time}.`);	
 				}else{
 					await interaction.reply('You don\'t have any records yet. Get out there and run!');
 				}

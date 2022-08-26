@@ -40,7 +40,7 @@ module.exports = {
 		return today;
 	},
 
-	capitalizeFirstLetter(string){
+	capsFirst(string){
 		if (string.indexOf(' ') >= 0) {
 			console.log(string.split(''));
 			let nextCap = true;
