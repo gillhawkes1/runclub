@@ -18,7 +18,7 @@ module.exports = {
 			'Hiya,',
 			'Ahoy,',
 			'Howdy,',
-			'Greetings,'
+			'Greetings,',
 		],
 
 		heifeTips: [
@@ -49,10 +49,36 @@ module.exports = {
 			'You know why I can\'t run on the pavement? I lactose.',
 		],
 
-		newRunResponse: [
-			'Good work! Enjoy your drink :beers:',
-			'Nice job!'
-		],
+		newRunResponse: {
+			salute: [
+				'Good work!',
+				'Nice job!',
+				'Nice work!',
+				'Keep it up!',
+				'I\'m glad you came!',
+				'Woo!',
+				'Getting after it!',
+				'Beastin\' :muscle:.',
+				'Great!',
+				'Good job!',
+				'Good Stuff!',
+
+			],
+
+			remark: [
+				'Enjoy your drink :beers:',
+				'Your run was recorded :writing_hand:',
+				'I\'ve got you marked down "notepad_spiral:',
+				'You\'re doing great! :medal:',
+				'Don\'t forget to stretch :person_doing_cartwheel:',
+				'Whatcha havin\'? :cow:',
+				':person_running: <- You',
+				'I\'ve got you recorded, because I\'m a smart cowputer :cow::computer:',
+				'Your run has been saved :cow:',
+				'Reward yourself with a cold one! :beer:',
+				'Your run is safe with me! :closed_lock_with_key:',
+			]
+		},
 
 		reactions: {
 			bad: [
@@ -65,7 +91,7 @@ module.exports = {
 				'lol.',
 				'lmao.',
 				'Try again?',
-				'Not gonna happen',
+				'Not gonna happen.',
 				'Probs nah.',
 				'Yeah no.',
 				'You\'re not getting a moo out of me for that one.',
@@ -104,6 +130,7 @@ module.exports = {
 				'Yup yup.',
 				'Duhyeah.',
 			]
-		}
+		},
+
     }
 }
