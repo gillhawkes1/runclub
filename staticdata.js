@@ -1,5 +1,5 @@
 module.exports = {
-    data: {
+    sd: {
         greeting: [
 			'Thanks,',
 			'Welcome,',

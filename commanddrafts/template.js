@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
-const sd = require('./../staticdata.js');
+const { data } = require('./../staticdata.js');
 
 
 //protected vars import

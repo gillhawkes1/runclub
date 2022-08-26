@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
-const sd = require('./../staticdata.js');
+const { sd } = require('./../staticdata.js');
 
 
 //protected vars import
@@ -42,7 +42,7 @@ module.exports = {
             //add user to user sheet, then add sheet to new run book
             await util.addRowToSheet(envvars.BOOK_USER_ID,envvars.CURRENT_YEAR,udata);
             await util.addSheet(envvars.BOOK_NEW_RUN,name,headers);            
-			return interaction.reply(util.randIndex(sd.data.greeting) + ' ' + util.capitalizeFirstLetter(fname) + '! Record a run with **/newrun**!');
+			return interaction.reply(util.randIndex(sd.greeting) + ' ' + util.capitalizeFirstLetter(fname) + '! Record a run with **/newrun**!');
         }else{
             return interaction.reply('This sheet doesn\'t exist!');
         }

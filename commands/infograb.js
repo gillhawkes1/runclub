@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
         const name = interaction.options.getString('name').toLowerCase();
         console.log(interaction.user.id,name)
-		await interaction.reply('Thanks! :cow:');
+		await interaction.reply({content: 'Thanks! :cow:', ephemeral: true});
 	},
 
 };

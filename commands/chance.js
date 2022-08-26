@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
-const sd = require('./../staticdata.js');
+const { sd }= require('./../staticdata.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -23,14 +23,14 @@ module.exports = {
         let reaction = '';
         switch (true) {
             case (pChance > 0 && pChance <= 40):
-                reaction = util.randIndex(sd.data.reactions.bad);
+                reaction = util.randIndex(sd.reactions.bad);
                 break;
             case (pChance > 40 && pChance <= 69):
-                reaction = util.randIndex(sd.data.reactions.ok);    
+                reaction = util.randIndex(sd.reactions.ok);    
                 reaction = pChance == 69 ? 'Nice.' : reaction;           
                 break;
             case (pChance > 69 && pChance <= 100):
-                reaction = util.randIndex(sd.data.reactions.good);
+                reaction = util.randIndex(sd.reactions.good);
                 break;
             default:
                 reaction = 'Well I\'m somehow answering this.';
