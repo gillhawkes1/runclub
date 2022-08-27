@@ -5,7 +5,7 @@ const fs = require('node:fs');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ module.exports = {
 	getCommands(){
 		var commandsList = '';
 		const commands = [];
-		const commandsPath = path.join(envvars.ROOT_PATH, 'commands');
+		const commandsPath = path.join(env.ROOT_PATH, 'commands');
 		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	
 		//build commands list

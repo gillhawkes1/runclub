@@ -6,7 +6,7 @@ const { data } = require('./../staticdata.js');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()

@@ -5,7 +5,7 @@ const { sd } = require('./../staticdata.js');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,7 +34,7 @@ module.exports = {
 		const distance = interaction.options.getNumber('distance');
 		const time = interaction.options.getString('time');
 		const comment = interaction.options.getString('comment');
-		const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
+		const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
 
 		//if their sheet exists 
 		if(sheet != undefined){
@@ -65,7 +65,7 @@ module.exports = {
 					multiplier: 1
 				}
 	
-				await util.addRowToSheet(envvars.BOOK_NEW_RUN,name,newRunRow);
+				await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
 				return interaction.editReply(util.randIndex(sd.newRunResponse.salute + ' ' + sd.newRunResponse.remark));
 			}
 

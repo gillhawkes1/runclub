@@ -6,7 +6,7 @@ const { sd } = require('./../staticdata.js');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,7 +26,7 @@ module.exports = {
             return interaction.editReply('Please enter both first and last name when using **/addme**.');
         }
         //get user sheet for the current year
-        const sheet = await util.getSheet(envvars.BOOK_USER_ID,envvars.CURRENT_YEAR);
+        const sheet = await util.getSheet(env.BOOK_USER_ID,env.CURRENT_YEAR);
 
         if(sheet != undefined){
             const rows = await sheet.getRows();
@@ -48,8 +48,8 @@ module.exports = {
             const headers = ['date','fname','lname','distance','time','comment','multiplier'];
 
             //add user to user sheet, then add sheet to new run book
-            await util.addRowToSheet(envvars.BOOK_USER_ID,envvars.CURRENT_YEAR,udata);
-            await util.addSheet(envvars.BOOK_NEW_RUN,name,headers);            
+            await util.addRowToSheet(env.BOOK_USER_ID,env.CURRENT_YEAR,udata);
+            await util.addSheet(env.BOOK_NEW_RUN,name,headers);            
 			return interaction.editReply(util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:');
         }else{
             return interaction.editReply('This sheet doesn\'t exist!');

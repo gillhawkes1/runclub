@@ -7,7 +7,7 @@ const { REST } = require('@discordjs/rest');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 
 //-----------BUILD COMMANDS FOR UPLOAD TO DISCORD------------//
@@ -22,8 +22,8 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '10' }).setToken(envvars.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
 
-rest.put(Routes.applicationGuildCommands(envvars.CLIENT_ID, envvars.GUILD_ID), { body: commands })
+rest.put(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);

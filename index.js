@@ -6,7 +6,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 //create and map commands
 client.commands = new Collection();
@@ -41,4 +41,4 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(envvars.DISCORD_TOKEN);
+client.login(env.DISCORD_TOKEN);

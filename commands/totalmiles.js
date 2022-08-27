@@ -4,7 +4,7 @@ const util = require('./../utility.js');
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
-const envvars = configfile.parsed;
+const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -23,7 +23,7 @@ module.exports = {
 		}
 		
 		if(name.split(' ').length > 1){
-			const sheet = await util.getSheet(envvars.BOOK_NEW_RUN,name);
+			const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
 			if(sheet != undefined){
 				const rows = await sheet.getRows();
 				if(rows.length > 0){
