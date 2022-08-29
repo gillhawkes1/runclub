@@ -29,7 +29,7 @@ module.exports = {
 				if(rows.length > 0){
 					let totals = { distance: 0, name: name, weeks: rows.length };
 					for(let i = 0; i < rows.length; i++){
-						totals.distance += parseFloat(rows[i].distance);
+						totals.distance += parseFloat(rows[i].distance * rows[i].multiplier);
 					}
 					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
 					const plural = rows.length == 1 ? 'week' : 'weeks';

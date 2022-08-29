@@ -47,12 +47,17 @@ module.exports = {
             }
             const headers = ['date','fname','lname','distance','time','comment','multiplier'];
 
-            //add user to user sheet, then add sheet to new run book
+            //add user to user sheet
             await util.addRowToSheet(env.BOOK_USER_ID,env.CURRENT_YEAR,udata);
-            await util.addSheet(env.BOOK_NEW_RUN,name,headers);            
+
+            //check for run sheet from a google form transfer
+            const runSheet = await util.getSheet(env.BOOK_NEW_RUN,name);
+            if(runSheet == undefined){
+                await util.addSheet(env.BOOK_NEW_RUN,name,headers);            
+            }
 			return interaction.editReply(util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:');
         }else{
-            return interaction.editReply('This sheet doesn\'t exist!');
+            return interaction.editReply('This user sheet doesn\'t exist!');
         }
 	},
 };
