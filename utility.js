@@ -53,6 +53,32 @@ module.exports = {
 		} else {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		}
-	}
+	},
 
+	validateTime(time){
+		try {
+			if(time.length <= 2){
+				return time + ':00';
+			}
+			if(time.includes('.')){
+				time.replace('.',':');
+			}
+			if(parseInt(time.split('')[0])){
+				let mins = time.split('')[0];
+				if(parseInt(time.split('')[1])){
+					mins += time.split('')[1];
+				}
+				let secs = ':';
+				secs += time.slice(2).split('').filter((e) => {return parseInt(e)}).join('') || '00';
+				return mins + secs;
+			}
+			if(time.length == 3){
+				time += '0';
+				return time;
+			}
+		} catch (error) {
+			console.log(error);
+			return 'BAD_TIME';
+		}
+	}
 }

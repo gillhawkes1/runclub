@@ -1,5 +1,21 @@
 module.exports = {
     sd: {
+		rewards: {
+			15: 'Sticker',
+			25: 'Glassware',
+			50: '4-pack',
+			75: 'T-shirt',
+			100: '$20 ACBC gift card',
+			200: '$20 ACBC gift card',
+			300: '$20 ACBC gift card',
+			400: '$20 ACBC gift card',
+			500: '$20 ACBC gift card',
+			600: '$20 ACBC gift card',
+			700: '$20 ACBC gift card',
+			800: '$20 ACBC gift card',
+			900: '$20 ACBC gift card',
+			1000: '$20 ACBC gift card'
+		},
         greeting: [
 			'Thanks,',
 			'Welcome,',
