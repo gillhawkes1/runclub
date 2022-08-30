@@ -4,6 +4,7 @@ const { sd } = require('./../staticdata.js');
 
 //protected vars import
 const varfile = require('dotenv');
+const { randIndex } = require('./../utility.js');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
@@ -47,26 +48,26 @@ module.exports = {
 				//if they already recorded a run for the day
 				if(rows[lastRun].date == util.getToday()){
 					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');				
+				}else{
+					const fname = name.split(' ')[0];
+					const lname = name.split(' ')[1];
+					const today = util.getToday();
+					
+					const newRunRow = {
+						date: today,
+						fname: fname,
+						lname: lname,
+						distance: distance,
+						time: time,
+						comment: comment,
+						multiplier: 1
+					}
+		
+					await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
+					return interaction.editReply(util.randIndex(sd.newRunResponse.salute) + ' ' + randIndex(sd.newRunResponse.remark));	
 				}
 
 			//verification that they have not recorded a run for the day yet
-			}else{
-				const fname = name.split(' ')[0];
-				const lname = name.split(' ')[1];
-				const today = util.getToday();
-				
-				const newRunRow = {
-					date: today,
-					fname: fname,
-					lname: lname,
-					distance: distance,
-					time: time,
-					comment: comment,
-					multiplier: 1
-				}
-	
-				await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
-				return interaction.editReply(util.randIndex(sd.newRunResponse.salute + ' ' + sd.newRunResponse.remark));
 			}
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
