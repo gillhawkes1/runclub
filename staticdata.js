@@ -1,5 +1,29 @@
 module.exports = {
     sd: {
+
+		channels: {
+			heife_channels: [
+				'1008443594715173024',
+				'996637178694213672',
+			],
+
+			//interaction.channel.name & interaction.channel.id
+			summon_heife: '1008443594715173024',
+			bot_testing: '996637178694213672',
+			admin_chat: '996429651050246235'
+		},
+
+
+		runData: {
+			multiplier: 1,
+		},
+
+		adminids: [
+			'332685115606171649',
+			'996448684181029017',
+			'358399290592329740',
+		],
+
 		rewards: {
 			15: 'Sticker',
 			25: 'Glassware',
@@ -47,7 +71,7 @@ module.exports = {
 			'MOO',
 			'If Kevin was 3 minutes late, everything is normal.',
 			'I wish they would let me behind the bar but I\'m too big.',
-			'Come to Food Truck Friday\'s!',
+			'Come to Food Truck Fridays!',
 			'Don\'t forget to stretch before and after you run!',
 			'I got the mooves like Jagger.',
 			'Try The Outlander; it\'s udderly delicious.',
@@ -84,7 +108,7 @@ module.exports = {
 			remark: [
 				'Enjoy your drink :beers:',
 				'Your run was recorded :writing_hand:',
-				'I\'ve got you marked down "notepad_spiral:',
+				'I\'ve got you marked down :notepad_spiral:',
 				'You\'re doing great! :medal:',
 				'Don\'t forget to stretch :person_doing_cartwheel:',
 				'Whatcha havin\'? :cow:',
