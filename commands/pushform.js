@@ -15,9 +15,6 @@ module.exports = {
         if(util.isRole(interaction,'Admin') == false){
             return interaction.reply('You are not an admin.');
         }
-        if(interaction.user.id != 332685115606171649){
-            return interaction.reply('Testing this command currently.');
-        }
         await interaction.deferReply({ephemeral: true});
         const sheet = await util.getSheet(env.BOOK_GOOGLE_FORM_DUMP,'Form Responses 1');
         const rows = await sheet.getRows();
@@ -38,23 +35,25 @@ module.exports = {
                     }else{
                         pushdata.time = rows[i].time;
                     }
+                    //append miliseconds onto end of time for google sheets
+                    pushdata.time += '.000';
                     pushdata.comment = rows[i].comment.trim();
                     pushdata.multiplier = rows[i].multiplier.split('')[1];
-                    console.log(pushdata);
-                    console.log(typeof pushdata.time)
                     //check for sheet
                     const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
                     if(sheet != undefined){
-                        //await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
+                        console.log('EXISTING SHEET, added row:', pushdata);
+                        await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
                         returnData.sheetExists++;
                     }else{ //create new sheet and then add their data
                         const headers = ['date','fname','lname','distance','time','comment','multiplier'];
-                        //await util.addSheet(env.BOOK_NEW_RUN,name,headers);
-                        //await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
+                        console.log('new SHEET, added row:', pushdata);
+                        await util.addSheet(env.BOOK_NEW_RUN,name,headers);
+                        await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
                         returnData.newSheets++;
                     }
-                    //rows[i].transfer_status = 1;
-                    //await rows[i].save();
+                    rows[i].transfer_status = 1;
+                    await rows[i].save();
                     returnData.records++;
                 }
             }
