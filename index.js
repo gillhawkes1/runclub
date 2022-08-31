@@ -2,6 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const { sd } = require('./staticdata.js');
+
 
 //protected vars import
 const varfile = require('dotenv');
@@ -28,6 +30,13 @@ client.once('ready', () => {
 //command execution
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
+
+  //only allow certain channels to use /commands
+  if(sd.channels.heife_channels.includes(interaction.channelId) == false){
+	console.log(interaction.channelId);
+	console.log(interaction.channel);
+	return interaction.reply({content: 'Please only use commands in the #summon-heife channel :cow:', ephemeral: true});
+  }
 
   //get commands and read
   const command = client.commands.get(interaction.commandName);
