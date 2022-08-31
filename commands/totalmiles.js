@@ -33,7 +33,8 @@ module.exports = {
 					}
 					let miles = Math.round((totals.distance + Number.EPSILON) * 100) / 100;
 					const plural = rows.length == 1 ? 'week' : 'weeks';
-					await interaction.editReply(`${util.capsFirst(fname)} has ran ${miles} miles over ${totals.weeks} ${plural}.\n Gill is still writing functionality for lifetime miles!`);	
+					console.log('/totalmiles was ran for '+ name);
+					await interaction.editReply(`${util.capsFirst(fname)} has run ${miles} miles over ${totals.weeks} ${plural}.\nGill is still writing functionality for lifetime miles!`);	
 				}else{
 					await interaction.editReply('You don\'t have any records yet. Get out there and run!');
 				}
