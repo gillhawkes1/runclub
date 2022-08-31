@@ -1,5 +1,6 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
+const { sd } = require('./staticdata.js');
 
 module.exports = {
 	async getSheet(bookid,sheetname=false){
@@ -80,5 +81,11 @@ module.exports = {
 			console.log(error);
 			return 'BAD_TIME';
 		}
+	},
+
+	setMultiplier(multiplier){
+		const prev = sd.runData.multiplier;
+		sd.runData.multiplier = multiplier;
+		return prev, sd.runData.multiplier;
 	}
 }
