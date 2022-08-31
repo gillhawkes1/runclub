@@ -4,7 +4,6 @@ const { sd } = require('./../staticdata.js');
 
 //protected vars import
 const varfile = require('dotenv');
-const { randIndex } = require('./../utility.js');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
@@ -44,35 +43,36 @@ module.exports = {
 			//if sheet has rows
 			if(rows.length > 0){
 				const lastRun = rows.length-1;
-
 				//if they already recorded a run for the day
 				if(rows[lastRun].date == util.getToday()){
-					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes; but not smart.');				
-				}else{
-					const fname = name.split(' ')[0];
-					const lname = name.split(' ')[1];
-					const today = util.getToday();
-					
-					const newRunRow = {
-						date: today,
-						fname: fname,
-						lname: lname,
-						distance: distance,
-						time: time,
-						comment: comment,
-						multiplier: 1
-					}
-		
-					await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
-					return interaction.editReply(util.randIndex(sd.newRunResponse.salute) + ' ' + randIndex(sd.newRunResponse.remark));	
+					console.log(name + ' tried to add a second run for the day.');
+					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes. But foolish.');
 				}
-
-			//verification that they have not recorded a run for the day yet
 			}
+
+			const fname = name.split(' ')[0];
+			const lname = name.split(' ')[1];
+			const today = util.getToday();
+			
+			const newRunRow = {
+				date: today,
+				fname: fname,
+				lname: lname,
+				distance: distance,
+				time: time + '.000',
+				comment: comment,
+				multiplier: sd.runData.multiplier
+			}
+
+			await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
+			console.log('new run recorded: ',newRunRow);
+			return interaction.editReply(util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark));	
+
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
-			return interaction.editReply('You are not in the system yet. Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
+			console.log(name + ' was not in the system when they tried /newrun');
+			return interaction.editReply('You are not in the system yet (make sure your name was spelled correctly, as this can cause a problem: **' + util.capsFirst(name) + '**). Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
 		}
 	},
 };
