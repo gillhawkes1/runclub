@@ -7,7 +7,7 @@ module.exports = {
 		.setName('user')
 		.setDescription('Get user information.'),
 	async execute(interaction) {
-		let name = this.returnName(interaction);
-		await interaction.reply(util.randIndex(sd.greeting) + ' ' + name);
+		
+		await interaction.reply({content: util.randIndex(sd.greeting), ephemeral: true});
 	},
 };
