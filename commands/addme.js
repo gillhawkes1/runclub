@@ -28,11 +28,13 @@ module.exports = {
         //get user sheet for the current year
         const sheet = await util.getSheet(env.BOOK_USER_ID,env.CURRENT_YEAR);
 
+        //sheet should NEVER be undefined unless starting a new year
         if(sheet != undefined){
             const rows = await sheet.getRows();
             for(let row of rows){
                 //return on user already in system
                 if(row.userid == interaction.user.id){
+                    console.log(name + ' tried to add themselves again.');
                     return interaction.editReply(util.capsFirst(fname) + ', you are already in the system!');
                 }
             }//if no return, add user below
@@ -49,11 +51,13 @@ module.exports = {
 
             //add user to user sheet
             await util.addRowToSheet(env.BOOK_USER_ID,env.CURRENT_YEAR,udata);
+            console.log('new user added: ',udata);
 
             //check for run sheet from a google form transfer
             const runSheet = await util.getSheet(env.BOOK_NEW_RUN,name);
             if(runSheet == undefined){
-                await util.addSheet(env.BOOK_NEW_RUN,name,headers);            
+                await util.addSheet(env.BOOK_NEW_RUN,name,headers);
+                console.log('new sheet added: ',udata);
             }
 			return interaction.editReply(util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:');
         }else{
