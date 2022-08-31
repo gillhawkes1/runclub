@@ -3,14 +3,20 @@ module.exports = {
 
 		channels: {
 			heife_channels: [
-				'1008443594715173024',
-				'996637178694213672',
+				'1008443594715173024', //#summon-heife
+				'996637178694213672', //#bot-testing
+				'996429651050246235' //#admin-chat
 			],
 
-			//interaction.channel.name & interaction.channel.id
+			welcome_rules_links: '996428352443400213',
+			announcements: '996428352443400214',
+			admin_chat: '996429651050246235',
+
+			acrc_chat: '996428352443400217',
+			photos: '996430436823740476',
 			summon_heife: '1008443594715173024',
+			udder_nonesense: '996428352443400218',
 			bot_testing: '996637178694213672',
-			admin_chat: '996429651050246235'
 		},
 
 
