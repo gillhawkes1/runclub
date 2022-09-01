@@ -68,7 +68,6 @@ module.exports = {
 			console.log('new run recorded: ',newRunRow);
 			return interaction.editReply(util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark));	
 
-
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
 			console.log(name + ' was not in the system when they tried /newrun');

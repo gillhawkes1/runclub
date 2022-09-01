@@ -38,6 +38,7 @@ module.exports = {
 		const mm = String(today.getMonth() + 1).padStart(2, '0'); //jan is 0
 		const yyyy = today.getFullYear();
 		today = mm + '/' + dd + '/' + yyyy;
+		today = today.split('')[0] == '0' ? today.slice(1) : today;
 		return today;
 	},
 

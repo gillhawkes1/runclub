@@ -25,6 +25,7 @@ module.exports = {
                 if(rows[i].transfer_status == 0){
                     let pushdata = {};
                     pushdata.date = rows[i].timestamp.split(' ')[0];
+                    pushdata.date = pushdata.date.split('')[0] == '0' ? pushdata.date.slice(1) : pushdata.date;
                     pushdata.fname = rows[i].fname.toLowerCase().trim();
                     pushdata.lname = rows[i].lname.toLowerCase().trim();
                     const name = pushdata.fname + ' ' + pushdata.lname;
