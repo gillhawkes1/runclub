@@ -33,7 +33,8 @@ module.exports = {
 		const name = interaction.options.getString('name').toLowerCase();
 		const distance = interaction.options.getNumber('distance');
 		const time = interaction.options.getString('time');
-		const comment = interaction.options.getString('comment');
+		let comment = interaction.options.getString('comment');
+		comment = comment == null ? '' : comment;
 		const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
 
 		//if their sheet exists 
