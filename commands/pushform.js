@@ -3,7 +3,6 @@ const util = require('./../utility.js');
 
 //protected vars import
 const varfile = require('dotenv');
-const { capsFirst } = require('./../utility.js');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
@@ -61,8 +60,14 @@ module.exports = {
             if(returnData.badTimeNames.length){
                 let reply = `${returnData.records} records were pushed.\n${returnData.newSheets} new run sheet(s) were created.\n`;
                 for(let i = 0; i <= returnData.badTimeNames.length - 1; i++){
+                    //if last person with bad data
                     if(i == returnData.badTimeNames.length - 1){
-                        reply += 'and ' + capsFirst(returnData.badTimeNames[i]) + ' ';
+                        //if only 1 person had bad data
+                        if(i == 0){
+                            reply += util.capsFirst(returnData.badTimeNames[i]) + ' submitted a bad time.'
+                            return interaction.editReply({content: reply});
+                        }
+                        reply += 'and ' + util.capsFirst(returnData.badTimeNames[i]) + ' ';
                     }else{
                         reply += util.capsFirst(returnData.badTimeNames[i]) + ', ';
                     }
