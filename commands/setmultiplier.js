@@ -2,8 +2,6 @@ const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
 const { sd } = require('./../staticdata.js');
 
-
-
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
