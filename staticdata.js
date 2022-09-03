@@ -118,7 +118,7 @@ module.exports = {
 				'You\'re doing great! :medal:',
 				'Don\'t forget to stretch :person_doing_cartwheel:',
 				'Whatcha havin\'? :cow:',
-				':person_running: <- You',
+				':person_running: <- You.',
 				'I\'ve got you recorded, because I\'m a smart cowputer :cow::computer:',
 				'Your run has been saved :cow:',
 				'Reward yourself with a cold one! :beer:',

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const util = require('./../utility.js');
 const { sd } = require('./../staticdata.js');
+const { users } = require('./../users.js');
 
 //protected vars import
 const varfile = require('dotenv');
@@ -67,7 +68,9 @@ module.exports = {
 
 			await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
 			console.log('new run recorded: ',newRunRow);
-			return interaction.editReply(util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark));	
+			let reply = util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark);
+			reply = users.inlcudes(interaction.user.id) ? reply : reply + ' \nConsider adding your user id into the system using **/addme** for a better user experience!';
+			return interaction.editReply(reply);	
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
