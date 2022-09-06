@@ -24,7 +24,7 @@ module.exports = {
                 //if a record has not been transferred yet
                 if(rows[i].transfer_status == 0){
                     //control requests per minute and break out of loop
-                    if(returnData.requests > 50){
+                    if(returnData.requests > 40){
                         reply += 'I had to stop running the /pushform command early because there were too many records to push. Just use **/pushform** again to continue.\n';
                         break;
                     }
