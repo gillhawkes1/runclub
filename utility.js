@@ -85,6 +85,8 @@ module.exports = {
 				time += '0';
 				return time;
 			}
+			console.log('error: bad time returned!');
+			return 'BAD_TIME'
 		} catch (error) {
 			console.log(error);
 			return 'BAD_TIME';
