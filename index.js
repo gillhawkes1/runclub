@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const { sd } = require('./staticdata.js');
+const util = require('./utility.js');
 
 
 //protected vars import
@@ -24,6 +25,9 @@ for (const file of commandFiles) {
 //when client is ready, run this code
 client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+	if(sd.testing == true){
+		util.startUp();
+	}
 	console.log('Ready!');
 });
 

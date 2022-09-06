@@ -2,7 +2,80 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
 
+//protected vars import
+const varfile = require('dotenv');
+const configfile = varfile.config();
+const env = configfile.parsed;
+
 module.exports = {
+	async startUp(){
+		console.log('initiating startUp()...');
+		await this.getAllSheets();
+		console.log('sd.books');
+		console.log(sd.books);
+	},
+
+	async getAllSheets(){
+		let reqct = 0;
+		for(const book of sd.bookNames){
+			const doc = new GoogleSpreadsheet(env[book]);
+			await doc.useServiceAccountAuth({ client_email: creds.client_email, private_key: creds.private_key });
+			reqct++;
+			await doc.loadInfo();
+			reqct++;
+
+			let info = {};
+			info.sheets = [];
+			info.title = doc.title;
+			if(book == 'BOOK_USER_ID'){
+				const sheet = doc.sheetsByTitle['y3'];
+				console.log(doc.sheetsByTitle['y3']);
+				const rows = await sheet.getRows();
+				if(rows.length > 0){
+					//console.log('test data: ', test);
+
+					//set headers and attributes
+					sd.books[book] = {};
+					sd.books[book].title = doc.sheetsByTitle['y3'].title;	
+					const headers = doc.sheetsByTitle['y3'].headerValues;
+					sd.books[book].headerValues = [];
+					sd.books[book].headerValues = headers;
+					
+
+					//set rows 
+					for(let j = 0; j < rows.length -1; j++){
+						//console.log(rows[j]);
+						//sd.books[book].
+						//console.log(sheet.headerValues[headers[j]])
+					}
+				}
+			}
+		}			
+		console.log(sd.books);
+		/**			
+			//if sheets within book
+			if(doc.sheetsByIndex.length > 0){
+				for(let i = 0; i < doc.sheetsByIndex.length; i++){
+					const sheet = doc.sheetsByIndex[i];
+					const rows = await sheet.getRows();
+					reqct++;
+					//console.log(reqct);
+					//console.log(i);
+					console.log(doc.title, sheet.title);
+					console.log(rows);
+					
+					sd.books[i] = sheet.title;
+					sd.books[i].rows = rows;
+
+					info.sheets[i] = sheet.title;
+					//info.sheets[i].rows = rows;
+					setTimeout(() => {},2000);
+				}
+			}
+ */
+
+	},
+
 	async getBook(bookid){
 		const doc = new GoogleSpreadsheet(bookid);
 		await doc.useServiceAccountAuth({ client_email: creds.client_email, private_key: creds.private_key });

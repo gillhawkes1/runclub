@@ -19,6 +19,16 @@ module.exports = {
 			bot_testing: '996637178694213672',
 		},
 
+		bookNames: [
+			'BOOK_NEW_RUN',
+			'BOOK_RUN_TOTALS',
+			'BOOK_USER_ID',
+			'BOOK_GOOGLE_FORM_DUMP',
+			'BOOK_LIFETIME_DATA',
+		],
+
+		books: {
+		},
 
 		runData: {
 			multiplier: 1,
@@ -178,5 +188,9 @@ module.exports = {
 			]
 		},
 
-    }
+		testing: false,
+
+		
+
+    }//end sd
 }
