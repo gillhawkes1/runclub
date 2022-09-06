@@ -18,10 +18,16 @@ module.exports = {
         const sheet = await util.getSheet(env.BOOK_GOOGLE_FORM_DUMP,'Form Responses 1');
         const rows = await sheet.getRows();
         if(rows.length > 0){
-            let returnData = {records: 0, newSheets: 0, sheetExists: 0, badTimeNames: []};
+            let reply = '';
+            let returnData = {records: 0, newSheets: 0, sheetExists: 0, badTimeNames: [], requests: 2};
             for(let i = 0; i < rows.length; i++){
                 //if a record has not been transferred yet
                 if(rows[i].transfer_status == 0){
+                    //control requests per minute and break out of loop
+                    if(returnData.requests > 50){
+                        reply += 'I had to stop running the /pushform command early because there were too many records to push. Just use **/pushform** again to continue.\n';
+                        break;
+                    }
                     let pushdata = {};
                     pushdata.date = rows[i].timestamp.split(' ')[0];
                     pushdata.date = pushdata.date.split('')[0] == '0' ? pushdata.date.slice(1) : pushdata.date;
@@ -41,24 +47,31 @@ module.exports = {
                     pushdata.multiplier = rows[i].multiplier.split('')[1];
                     //check for sheet
                     const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
+                    returnData.requests++;
                     if(sheet != undefined){
                         console.log('EXISTING SHEET, added row:', pushdata);
                         await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
+                        returnData.requests++;
                         returnData.sheetExists++;
                     }else{ //create new sheet and then add their data
                         const headers = ['date','fname','lname','distance','time','comment','multiplier'];
                         console.log('new SHEET, added row:', pushdata);
                         await util.addSheet(env.BOOK_NEW_RUN,name,headers);
+                        returnData.requests++;
                         await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
+                        returnData.requests++;
                         returnData.newSheets++;
                     }
                     rows[i].transfer_status = 1;
                     await rows[i].save();
+                    returnData.requests++;
                     returnData.records++;
                 }
-            }
+            }//end for loop
+
+            //if bad times were submitted to form
             if(returnData.badTimeNames.length){
-                let reply = `${returnData.records} records were pushed.\n${returnData.newSheets} new run sheet(s) were created.\n`;
+                reply += `${returnData.records} records were pushed.\n${returnData.newSheets} new run sheet(s) were created.\n`;
                 for(let i = 0; i <= returnData.badTimeNames.length - 1; i++){
                     //if last person with bad data
                     if(i == returnData.badTimeNames.length - 1){
