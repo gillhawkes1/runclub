@@ -3,6 +3,13 @@ const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
 
 module.exports = {
+	async getBook(bookid){
+		const doc = new GoogleSpreadsheet(bookid);
+		await doc.useServiceAccountAuth({ client_email: creds.client_email, private_key: creds.private_key });
+		await doc.loadInfo();
+		return doc;
+	},
+
 	async getSheet(bookid,sheetname=false){
 		const doc = new GoogleSpreadsheet(bookid);
 		await doc.useServiceAccountAuth({ client_email: creds.client_email, private_key: creds.private_key });
