@@ -69,9 +69,12 @@ module.exports = {
                 }
             }//end for loop
 
+            let plural1 = returnData.records > 1 ? 'were' : 'was';
+            let plural2 = returnData.newSheets > 1 ? 'were' : 'was';
+
             //if bad times were submitted to form
             if(returnData.badTimeNames.length){
-                reply += `${returnData.records} records were pushed.\n${returnData.newSheets} new run sheet(s) were created.\n`;
+                reply += `${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.\n`;
                 for(let i = 0; i <= returnData.badTimeNames.length - 1; i++){
                     //if last person with bad data
                     if(i == returnData.badTimeNames.length - 1){
@@ -88,7 +91,7 @@ module.exports = {
                 reply += 'all submitted badly formatted times.\nEncourage them to use the correct format :cow:';
                 return interaction.editReply({content: reply});
             }
-            return interaction.editReply(`${returnData.records} records were pushed.\n${returnData.newSheets} new run sheet(s) were created.`);
+            return interaction.editReply(`${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.`);
         }else{
             return interaction.editReply('There was no data to push.');
         }

@@ -37,7 +37,7 @@ client.on('interactionCreate', async interaction => {
 
   //only allow certain channels to use /commands
   if(sd.channels.heife_channels.includes(interaction.channelId) == false){
-	return interaction.reply({content: 'Please only use commands in the #summon-heife channel :cow:', ephemeral: true});
+	return interaction.reply({content: `Please only use commands in the <#1008443594715173024> channel :cow:`, ephemeral: true});
   }
 
   //get commands and read

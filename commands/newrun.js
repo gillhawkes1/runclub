@@ -69,7 +69,7 @@ module.exports = {
 			await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
 			console.log('new run recorded: ',newRunRow);
 			let reply = util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark);
-			reply = users.includes(interaction.user.id) ? reply : reply + ' \nConsider adding your user id into the system using **/addme** for a better user experience!';
+			//reply = users.includes(interaction.user.id) ? reply : reply + ' \nConsider adding your user id into the system using **/addme** for a better user experience!';
 			return interaction.editReply(reply);	
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
