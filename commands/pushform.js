@@ -22,7 +22,7 @@ module.exports = {
             let returnData = {records: 0, newSheets: 0, sheetExists: 0, badTimeNames: [], requests: 2};
             for(let i = 0; i < rows.length; i++){
                 //if a record has not been transferred yet
-                if(rows[i].transfer_status == 0){
+                if(rows[i].transfer_status != 1){
                     //control requests per minute and break out of loop
                     if(returnData.requests > 40){
                         reply += 'I had to stop running the /pushform command early because there were too many records to push. Just use **/pushform** again to continue.\n';
