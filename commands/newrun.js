@@ -52,8 +52,8 @@ module.exports = {
 				}
 			}
 
-			const fname = name.split(' ')[0];
-			const lname = name.split(' ')[1];
+			let fname = name.split(' ')[0];
+			let lname = name.split(' ')[1];
 			const today = util.getToday();
 			
 			const newRunRow = {
@@ -69,7 +69,14 @@ module.exports = {
 			await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
 			console.log('new run recorded: ',newRunRow);
 			let reply = util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark);
-			//reply = users.includes(interaction.user.id) ? reply : reply + ' \nConsider adding your user id into the system using **/addme** for a better user experience!';
+
+			//check their server name and update it if it does not already contain their name
+            const currentNickname = interaction.member.nickname;
+            if(currentNickname.includes(fname) == false){
+                const newNickname = (fname + ' ' + lname.split('')[0]);
+                interaction.member.setNickname(util.capsFirst(newNickname));
+                reply += '\nI went ahead and changed your name to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
+            }
 			return interaction.editReply(reply);	
 
 		//else if they are not in the system yet (they don't have a sheet to record their runs)

@@ -18,9 +18,10 @@ module.exports = {
             .setRequired(true)),
 	async execute(interaction) {
         await interaction.deferReply();
+        let reply = '';
         const name = interaction.options.getString('name').toLowerCase();
-        const fname = name.split(' ')[0];
-        const lname = name.split(' ')[1];
+        let fname = name.split(' ')[0];
+        let lname = name.split(' ')[1];
 
         if(name.split(' ').length < 2){
             return interaction.editReply('Please enter both first and last name when using **/addme**.');
@@ -59,7 +60,17 @@ module.exports = {
                 await util.addSheet(env.BOOK_NEW_RUN,name,headers);
                 console.log('new sheet added: ',udata);
             }
-			return interaction.editReply(util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:');
+            reply += util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:';
+
+            //check their server name and update it if it does not already contain their name
+            const currentNickname = interaction.member.nickname;
+            if(currentNickname.includes(fname) == false){
+                const newNickname = (fname + ' ' + lname.split('')[0]);
+                interaction.member.setNickname(util.capsFirst(newNickname));
+                reply += '\nI went ahead and changed your name to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
+            }
+            
+			return interaction.editReply(reply);
         }else{
             return interaction.editReply('This user sheet doesn\'t exist!');
         }
