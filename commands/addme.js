@@ -63,12 +63,12 @@ module.exports = {
             reply += util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:';
 
             //check their server name and update it if it does not already contain their name
-            const currentNickname = interaction.member.nickname;
-            if(currentNickname.includes(fname) == false){
+/*             const currentNickname = interaction.member.nickname.toLowerCase();
+            if(util.isRole(interaction, 'Admin') == false && currentNickname.includes(fname) == false){
                 const newNickname = (fname + ' ' + lname.split('')[0]);
                 interaction.member.setNickname(util.capsFirst(newNickname));
                 reply += '\nI went ahead and changed your name to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
-            }
+            } */
             
 			return interaction.editReply(reply);
         }else{
