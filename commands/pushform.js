@@ -43,7 +43,7 @@ module.exports = {
                     }
                     //append miliseconds onto end of time for google sheets
                     pushdata.time += '.000';
-                    pushdata.comment = rows[i].comment.trim();
+                    pushdata.comment = rows[i].comment != undefined ? rows[i].comment.trim() : '';
                     pushdata.multiplier = rows[i].multiplier.split('')[1];
                     //check for sheet
                     const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
