@@ -11,3 +11,4 @@ A discord bot for Armored Cow Run Club. Read/write to google sheets, and gather 
 - dotenv
 - google-spreadsheet
 - eslint (not required)
+- nodemon (not required)
