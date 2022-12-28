@@ -16,7 +16,7 @@ module.exports = {
             option.setName('name')
             .setDescription('First and last name')
             .setRequired(true))
- 		.addNumberOption(option => 
+		.addNumberOption(option => 
             option.setName('distance')
             .setDescription('Run distance')
             .setRequired(true))
@@ -31,7 +31,15 @@ module.exports = {
 
 	async execute(interaction) {
 		await interaction.deferReply();
-		const name = interaction.options.getString('name').toLowerCase();
+		const name = interaction.options.getString('name').toLowerCase().trim();
+		let fname = name.split(' ')[0];
+		let lname = '';
+		if (name.split(' ').length > 1) {
+			lname = name.split(' ')[1];
+		} else {
+			return interaction.editReply('Please try **/newrun** again with your first and last name. If you previously submitted a run in the google form, you will use the same first and last name that you did there.');
+		}
+
 		const distance = interaction.options.getNumber('distance');
 		const time = interaction.options.getString('time');
 		let comment = interaction.options.getString('comment');
@@ -52,8 +60,6 @@ module.exports = {
 				}
 			}
 
-			let fname = name.split(' ')[0];
-			let lname = name.split(' ')[1];
 			const today = util.getToday();
 			
 			const newRunRow = {
