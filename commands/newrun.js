@@ -88,7 +88,7 @@ module.exports = {
 		//else if they are not in the system yet (they don't have a sheet to record their runs)
 		}else{
 			console.log(name + ' was not in the system when they tried /newrun');
-			return interaction.editReply('You are not in the system yet (make sure your name was spelled correctly, as this can cause a problem: **' + util.capsFirst(name) + '**). Please use **/addme** to add yourself into the system, then record your run with **/newrun**.');
+			return interaction.editReply('You are not in the system yet (make sure your name was spelled correctly, as this can cause a problem: **' + util.capsFirst(name) + '**). Please use **/addme** to add yourself into the system, then record your run with **/newrun**. If you believe you are already in the system and this is an error, contact <@332685115606171649>.');
 		}
 	},
 };
