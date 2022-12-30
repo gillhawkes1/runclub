@@ -1,6 +1,8 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
+const { Routes } = require('discord.js');
+const { REST } = require('@discordjs/rest');
 
 //protected vars import
 const varfile = require('dotenv');
@@ -170,5 +172,12 @@ module.exports = {
 		const prev = sd.runData.multiplier;
 		sd.runData.multiplier = multiplier;
 		return prev, sd.runData.multiplier;
-	}
+	},
+
+	deploy(commands){
+		const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
+		rest.put(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), { body: commands })
+			.then(() => console.log('Successfully registered application commands.'))
+			.catch(console.error);
+	},
 }

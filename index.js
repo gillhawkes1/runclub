@@ -5,13 +5,13 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const { sd } = require('./staticdata.js');
 const util = require('./utility.js');
 
-
 //protected vars import
 const varfile = require('dotenv');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
 //create and map commands
+const commands = [];
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -19,8 +19,11 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
+	commands.push(command.data.toJSON());
 	client.commands.set(command.data.name, command);
 }
+
+util.deploy(commands);
 
 //when client is ready, run this code
 client.once('ready', () => {
