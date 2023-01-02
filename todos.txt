@@ -1,33 +1,58 @@
 todos:
-- when a user enters any command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"
+
+Gill
 - lifetime miles (this is a grande task)
-- make /newrun error handling more descriptive for the user if they do something wrong
-- create /routes select list and delete the current commands for the routes
-    - check date and make sure they are getting the correct map if it is daylight savings or not
-    - create the actual routes in google maps and use the urls
-- update /pushform to include better response to command sender
-    - were bad times handled correctly?
-    - what time was submitted to google if needed to be handled?
+- when a user enters any command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"
+- create a setTimeout() for /pushform to check the server for new data so i don't have to do it at run club or before run club each week
 - update /newrun to check for id in static data
     - pull users sheet when heife signs in and set the static data users obj for quick check
+    - we need to pull data from server on startup and set it as object in static data
 - figure out a way to use a discord user id for the current sheet check, which is using first name last name
     - likely we will do key/val pairs in an obj for static data users and match the user id then retrieve the sheet
-- assign roles when mileage tiers are hit
 - create /myrewards for each user (grande)
     - we will need another sheet that tracks rewards according to what your total mileage is, and if you have cashed them in or not.
     - mia will need a command to mark off rewards so we don't have that responsibility anymore. takes weight off of tom and mia both
-- optimize heife to pull all data from sheets on login and set as objects in static data? maybe a new file called current data or something for the sheet data that is pulled on login (very, very grande)
-    - need a new token every 60 minutes for the google sheets
-    - need a function to run every minute or so to check for local data changes, and push them to google sheets
-- check untappd api to connect AC beers to a command /taplist or something fun that doesn't involve run data
-- write a command that will ping everyone with pre-set templates for announcements so cliff only has to input /announcement **template number** on tuesdays to send an announcement out
-- refactor /commands. the character limit per message is going to poop itself once we have too many commands
 - setup server at home
-- create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param
-- /leaderboard command. need two: top and relative to the user who runs the command because of character limits. ask dibes about how he returns the cs teams as a photo on csccore
-- add more content to static data new run responses and greetings. need more variation as i have seen many repeats one after another
-- add any useful stuff to utility.js
+
+Donald
+- refactor /commands. the character limit per message is going to poop itself once we have too many commands
+    - install handlebars and puppeteer. this is good practice for front end stuff. 
+- create /routes select list and delete the current commands for the routes. you can do this by using the .addStringOption() method
+    - check date and make sure they are getting the correct map if it is daylight savings or not
+        - try getting the 1st/2nd sunday of november/march and check to see if it is past or before that date. set maps to variables with ternary operators.
+    - create the actual routes in google maps and use the urls
+    - return routes they pick
+    - we need routes for distances 1,2,3,4,5 miles for summer and winter 
 - come up with more fun commands so we don't beat our heads against the wall only doing run stuff. gotta enjoy the little things
+- create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param and will use the current /newrun file structure with edits to make sure they don't have a run on that date yet, or a run that has been submitted that current week
+
+
+Misc & up for grabs pending completion of current lists:
+- assign roles when mileage tiers are hit
+- update /pushform to include better response to command sender
+    - were bad times handled correctly?
+    - what time was submitted to google if needed to be handled? was it good for google or did it fuck up? good format: 00:00.000
+- /leaderboard command. need two: top and relative to the user who runs the command because of character limits
+    - this will be the same as the refactor for /commands. we need to render an html page with the leaderboard. pass a selectable option:
+        - /leaderboard all
+        - /leaderboard relative (or /leaderboard me, i can't decide)
+        - this will render an html page with ALL peeps on the leaderboard, or the top 5 then a line with (......), then middle 5 where the user that submitted the command is relative to the others around them.
+        - ex:
+            1. runner one: 99 mi
+            2. runner two: 98 mi
+            3. runner three: 97 mi
+            4. runner four: 96 mi
+            5. runner five: 95 mi
+            ........
+            14. runner fourteen: 79 mi
+            15. runner fifteen: 78 mi
+            16. user that submitted the command: 77 mi
+            17. runner seventeen: 76 mi
+            18. runner eighteen: 75 mi
+            ......and X more runners below
+- add more content to static data new run responses and greetings. need more variation as i have seen many repeats one after another
+- check untappd api to connect AC beers to a command /taplist or something fun that doesn't involve run data
+
 
 completed:
-none yet :) just copy/ paste above to here when done
+- make /newrun error handling more descriptive for the user if they do something wrong
