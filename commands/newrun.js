@@ -37,7 +37,7 @@ module.exports = {
 		if (name.split(' ').length > 1) {
 			lname = name.split(' ')[1];
 		} else {
-			return interaction.editReply('Please try **/newrun** again with your first and last name. If you previously submitted a run in the google form, you will use the same first and last name that you did there.');
+			return interaction.editReply('Please try **/newrun** again with your first and last name. If you previously submitted a run in the google form, you will use the same first and last name that you did there. If you continue to get errors with the correct name, contact <@332685115606171649>.');
 		}
 
 		const distance = interaction.options.getNumber('distance');
