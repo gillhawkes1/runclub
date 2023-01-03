@@ -1,8 +1,34 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
-const { Routes } = require('discord.js');
+const { Routes, Collection, Client, GatewayIntentBits } = require('discord.js');
 const { REST } = require('@discordjs/rest');
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const fs = require('node:fs');
+const path = require('node:path');
+
+// //create and map commands
+// const commands = [];
+// client.commands = new Collection();
+// const commandsPath = path.join(__dirname, 'commands');
+// const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+// for (const file of commandFiles) {
+// 	const filePath = path.join(commandsPath, file);
+// 	const command = require(filePath);
+// 	commands.push(command.data.toJSON());
+// 	client.commands.set(command.data.name, command);
+// }
+
+// // check need for command deployment
+// // const serverCommands = util.getServerCommands().then(() => {
+// // 	const doIDeploy = util.compareCommands(commands, serverCommands);
+// // 	if(doIDeploy !== false) {
+// // 		console.log('doIDeploy', doIDeploy);
+// // 		util.deployCommands(commands);
+// // 	}
+// // });
+
 
 //protected vars import
 const varfile = require('dotenv');
@@ -174,10 +200,111 @@ module.exports = {
 		return prev, sd.runData.multiplier;
 	},
 
-	deploy(commands){
+	getLocalCommands(){
+		//create and map commands
+		const commands = [];
+		client.commands = new Collection();
+		const commandsPath = path.join(__dirname, 'commands');
+		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+		for (const file of commandFiles) {
+			const filePath = path.join(commandsPath, file);
+			const command = require(filePath);
+			commands.push(command.data.toJSON());
+			client.commands.set(command.data.name, command);
+		}
+		return commands;
+	},
+
+	deployCommands(commands){
 		const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
 		rest.put(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), { body: commands })
 			.then(() => console.log('Successfully registered application commands.'))
 			.catch(console.error);
 	},
+
+	mapCommandOptions(commands) {
+		let sortedOptions = [];
+		for (let command of commands) {
+		  // command.options for server commands, OR statement for file commands since they don't have empty arrays, the options prop doesn't exist if they don't have options
+			if (command.options || (command.hasOwnProperty('options') && command.options.length)) {
+				let option = {};
+				option.name = command.name;
+				option.options = command.options;
+				sortedOptions.push(option);
+			}
+		}
+		return sortedOptions;
+	},
+
+	compareCommands(fileCommands, serverCommands) {
+
+		//return this object if there are changes. if not, return false
+		const res = { newCommands: [], removedCommands: [], editedCommands: [], editedDescriptions:[] };
+
+		//.then compare received commands from server with commands in files
+		const fileCommandNames = fileCommands.map(command => command.name);
+		const serverCommandNames = serverCommands.map(command => command.name);
+		const fileCommandDescriptions = serverCommands.map(command => command.description);
+		const serverCommandDescriptions = serverCommands.map(command => command.description);
+		const fileCommandOptions = this.mapCommandOptions(fileCommands);
+		const serverCommandOptions = this.mapCommandOptions(serverCommands);
+
+		//get added commands
+		for (const fileCommand of fileCommandNames) {
+		  	//if command is new, push to "new" object prop array
+			if(serverCommandNames.includes(fileCommand) === false) {
+				res.newCommands.push(fileCommand);
+			}
+		}
+		//get removed commands
+		for (const serverCommand of serverCommandNames) {
+			if(fileCommandNames.includes(serverCommand) === false) {
+				res.removedCommands.push(serverCommand);
+			}
+		}
+
+		//edited descriptions
+		for (const description of fileCommandDescriptions) {
+			if(serverCommandDescriptions.includes(description) === false) {
+				res.editedDescriptions.push(description);
+			}
+		}
+		
+		//compare options
+		for (const fileCommandOption of fileCommandOptions) {
+			for (const serverCommandOption of serverCommandOptions) {
+				//if same command
+				if(serverCommandOption.name === fileCommandOption.name){
+					if (JSON.stringify(serverCommandOption.options) !== JSON.stringify(fileCommandOption.options)) {
+						console.log('JSON.stringify(fileCommandOption.options)', JSON.stringify(fileCommandOption.options));
+						console.log('JSON.stringify(serverCommandOption.options)', JSON.stringify(serverCommandOption.options));
+						res.editedCommands.push(fileCommandOption.name);
+					}
+				}
+			}
+		}
+		
+		//return changes or don't deploy
+		if (res.newCommands.length || res.removedCommands.length || res.editedCommands.length) {
+			return res;
+		} else {
+			return false;
+		}
+	},
+	
+	checkForCommandDeployment() {
+		const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
+		rest.get(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), {})
+		.then((res) => {
+			const localCommandFiles = this.getLocalCommands();
+			const doIDeploy = this.compareCommands(localCommandFiles, res);
+			if(doIDeploy !== false){
+				console.log('\n---------- ** COMMAND CHANGES ** ----------');
+				console.log(doIDeploy);
+				console.log('---------- ** COMMAND CHANGES ** ----------\n');
+				this.deployCommands(localCommandFiles);
+			}
+		}).catch(console.error);
+	}
 }
