@@ -15,19 +15,20 @@ Gill
 - setup server at home
 
 Donald
-- refactor /commands. the character limit per message is going to poop itself once we have too many commands
-    - install handlebars and puppeteer. this is good practice for front end stuff. 
 - create /routes select list and delete the current commands for the routes. you can do this by using the .addStringOption() method
     - check date and make sure they are getting the correct map if it is daylight savings or not
         - try getting the 1st/2nd sunday of november/march and check to see if it is past or before that date. set maps to variables with ternary operators.
     - create the actual routes in google maps and use the urls
     - return routes they pick
     - we need routes for distances 1,2,3,4,5 miles for summer and winter 
-- come up with more fun commands so we don't beat our heads against the wall only doing run stuff. gotta enjoy the little things
-- create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param and will use the current /newrun file structure with edits to make sure they don't have a run on that date yet, or a run that has been submitted that current week
+- come up with a fun command that users can play with! maybe its a tic-tac-toe game, maybe something else!
+    - bottom line is i want more interaction with the bot, and this is a spectacular way to do that (create a game) :)
 
 
 Misc & up for grabs pending completion of current lists:
+- refactor /commands. the character limit per message is going to poop itself once we have too many commands
+    - install handlebars and puppeteer. this is good practice for front end stuff.
+- create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param and will use the current /newrun file structure with edits to make sure they don't have a run on that date yet, or a run that has been submitted that current week
 - assign roles when mileage tiers are hit
 - update /pushform to include better response to command sender
     - were bad times handled correctly?
