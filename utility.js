@@ -250,26 +250,10 @@ module.exports = {
 		const fileCommandOptions = this.mapCommandOptions(fileCommands);
 		const serverCommandOptions = this.mapCommandOptions(serverCommands);
 
-		//get added commands
-		for (const fileCommand of fileCommandNames) {
-		  	//if command is new, push to "new" object prop array
-			if(serverCommandNames.includes(fileCommand) === false) {
-				res.newCommands.push(fileCommand);
-			}
-		}
-		//get removed commands
-		for (const serverCommand of serverCommandNames) {
-			if(fileCommandNames.includes(serverCommand) === false) {
-				res.removedCommands.push(serverCommand);
-			}
-		}
-
-		//edited descriptions
-		for (const description of fileCommandDescriptions) {
-			if(serverCommandDescriptions.includes(description) === false) {
-				res.editedDescriptions.push(description);
-			}
-		}
+		//get added, removed, edited commands & descriptions
+		res.newCommands = fileCommandNames.filter(command => !serverCommandNames.includes(command));
+		res.removedCommands = serverCommandNames.filter(command => !fileCommandNames.includes(command));
+		res.editedDescriptions = serverCommandDescriptions.filter(command => !fileCommandDescriptions.includes(command));
 		
 		//compare options
 		for (const fileCommandOption of fileCommandOptions) {
