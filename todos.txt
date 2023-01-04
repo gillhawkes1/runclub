@@ -51,9 +51,9 @@ Misc & up for grabs pending completion of current lists:
             17. runner seventeen: 76 mi
             18. runner eighteen: 75 mi
             ......and X more runners below
-- add more content to static data new run responses and greetings. need more variation as i have seen many repeats one after another
 - check untappd api to connect AC beers to a command /taplist or something fun that doesn't involve run data
 
 
 completed:
 - make /newrun error handling more descriptive for the user if they do something wrong
+- add more content to static data new run responses and greetings. need more variation as i have seen many repeats one after another
