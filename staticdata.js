@@ -82,7 +82,7 @@ module.exports = {
 			'Wear your runclub shirt for $1 off on Tuesdays.',
 			'Come run in the rain for double miles rewards.',
 			'You can redeem your rewards at the bar.',
-			'If the heat index is over 95F, it\'s 2x miles.',
+			'If the heat index is over 95F or temp is under 33F it\'s 2x miles.',
 			'Fun fact: I\'m a cowputer.',
 			'MOO',
 			'If Kevin was 3 minutes late, everything is normal.',
@@ -103,6 +103,8 @@ module.exports = {
 			'A cow in an earthquake is a milkshake.',
 			'Got beer?',
 			'You know why I can\'t run on the pavement? I lactose.',
+			'My favorite type of been is a milk stout.',
+			'Enjoy $1 off your first beer on Tuesdays if you wear your Run Club shirt!'
 		],
 
 		newRunResponse: {
@@ -118,7 +120,28 @@ module.exports = {
 				'Great!',
 				'Good job!',
 				'Good Stuff!',
-
+				'Let\'s go!',
+				'Howdy doody!',
+				'Good to see ya!',
+				'Yee haw!',
+				'Run the rack!',
+				'Giddy up!',
+				'MOO.',
+				'MOOOOOO.',
+				'Fantastic!',
+				'Tremondous!',
+				'Remarkable!',
+				'Overwhelming? Nahhh.',
+				'EZPZ.',
+				'You got this!',
+				'Keep on keeping on!',
+				'Sending good vibes your way!',
+				'One for the books!',
+				'Crushing!',
+				'You\'re done!',
+				'Breathe easy, you\'re finished!',
+				'Incredible!',
+				'Sweeeeet.'
 			],
 
 			remark: [
@@ -133,6 +156,20 @@ module.exports = {
 				'Your run has been saved :cow:',
 				'Reward yourself with a cold one! :beer:',
 				'Your run is safe with me! :closed_lock_with_key:',
+				'I appreciate you being here :cow:',
+				'Once upon a time, I recorded your run :book:',
+				'*Scribbles run down with hooves furiously*',
+				'Eat mor chikin? No. Give me more runs to record! :cow:',
+				'Seven maids a milkin me while I write down this run.',
+				'Go join the other finished runners!',
+				'I\'ve got you recorded. Ask Mia about rewards!',
+				'Run? :white_check_mark: Recorded? :white_check_mark:',
+				'*Types run into database meticulously with hooves*',
+				'*Pushes cow-sized glasses up to eyes* "It\'s recording time."',
+				'Chic-fil-a mascot wishes he could record a run like I just did!',
+				'You\'re marked down my friend.',
+				'I\'ve got your run locked in!',
+				'It\s raining, it\'s pouring, Heife is recordin\'!',
 			]
 		},
 
@@ -189,8 +226,6 @@ module.exports = {
 		},
 
 		testing: false,
-
-		
 
     }//end sd
 }
