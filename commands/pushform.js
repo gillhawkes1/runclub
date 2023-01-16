@@ -3,6 +3,7 @@ const util = require('./../utility.js');
 
 //protected vars import
 const varfile = require('dotenv');
+const { sd } = require('../staticdata.js');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
@@ -11,10 +12,18 @@ module.exports = {
 		.setName('pushform')
 		.setDescription('admin only. push google form data to run sheets.'),
 	async execute(interaction) {
+
+
+		// update /pushform to update the rewards they get if they hit a tier on transfer of run data
+        // TODO: check for name on lifetime sheet add them if they are only google sheet submitters and don't use /newrun (/newrun adds them to lifetime sheet automatically)
+		// update /pushform to update the current yearly (y3 is now) and lifetime miles amounts in the sheet
+
+
+
         if(util.isRole(interaction,'Admin') == false){
-            return interaction.reply('You are not an admin.');
+            return interaction.reply('You are not an admin. lol nice try :brain:');
         }
-        await interaction.deferReply({ephemeral: true});
+        await interaction.deferReply();
         const sheet = await util.getSheet(env.BOOK_GOOGLE_FORM_DUMP,'Form Responses 1');
         const rows = await sheet.getRows();
         if(rows.length > 0){
@@ -45,7 +54,7 @@ module.exports = {
                     pushdata.time += '.000';
                     pushdata.comment = rows[i].comment != undefined ? rows[i].comment.trim() : '';
                     pushdata.multiplier = rows[i].multiplier.split('')[1];
-                    //check for sheet
+                    //check for run sheet
                     const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
                     returnData.requests++;
                     if(sheet != undefined){
@@ -66,7 +75,31 @@ module.exports = {
                     await rows[i].save();
                     returnData.requests++;
                     returnData.records++;
-                }
+
+                    // get lifetime sheet and update yearly and lifetime miles. add them to sheet if they don't have a row yet
+                    const lifetimeSheet = await util.getSheet(env.BOOK_RUN_TOTALS,'lifetime');
+                    returnData.requests++;
+                    const lifetimeRows = await lifetimeSheet.getRows();
+                    returnData.requests++;
+                    const foundRow = util.getLifetimeMilesRow(lifetimeRows,name);
+                    if(foundRow) {
+                        foundRow.lifetime = parseFloat(foundRow.lifetime) + parseFloat(pushdata.distance * pushdata.multiplier);
+                        foundRow[sd.currentYear] = parseFloat(foundRow[sd.currentYear]) + parseFloat(pushdata.distance * pushdata.multiplier);
+                        await foundRow.save();
+                        returnData.requests++;
+                    } else {
+                        let newLifetimeRow = {
+                            user_id: '',
+                            fname: pushdata.fname,
+                            lname: pushdata.lname,
+                            lifetime: parseFloat(pushdata.distance * pushdata.multiplier),
+                        }
+                        newLifetimeRow[sd.currentYear] = parseFloat(pushdata.distance * pushdata.multiplier);
+                        await util.addRowToSheet(env.BOOK_RUN_TOTALS,'lifetime',newLifetimeRow);
+                        returnData.requests++;
+                        console.log('did not find lifetime row, newlifeimte row: ',newLifetimeRow);
+                    }
+                } // end records that need transferring
             }//end for loop
 
             let plural1 = returnData.records > 1 ? 'were' : 'was';
@@ -91,9 +124,13 @@ module.exports = {
                 reply += 'all submitted badly formatted times.\nEncourage them to use the correct format :cow:';
                 return interaction.editReply({content: reply});
             }
-            return interaction.editReply(`${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.`);
+            if(returnData.records > 0){
+                return interaction.editReply(`${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.`);
+            } else {
+                return interaction.editReply('There was no data to push.');
+            }
         }else{
-            return interaction.editReply('There was no data to push.');
+
         }
     }
 }

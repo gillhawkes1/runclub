@@ -1,15 +1,11 @@
 todos:
 
 Gill
-- lifetime miles (this is a grande task)
-- when a user enters any command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"
+- **NOT SURE IF THIS IS POSSIBLE WITH CURRENT DISCORD.JS LIBRARY. PREVENTS @everyone PINGS** /announcement command to ping @everyone from the #announcements channel. edit message as needed
+    - client.channels.cache.get('CHANNEL ID').send('Hello here!')
+    - const bot = new Discord.Client({disableEveryone: False});
 - create a setTimeout() for /pushform to check the server for new data so i don't have to do it at run club or before run club each week
-- update /newrun to check for id in static data
-    - pull users sheet when heife signs in and set the static data users obj for quick check
-    - we need to pull data from server on startup and set it as object in static data
-- figure out a way to use a discord user id for the current sheet check, which is using first name last name
-    - likely we will do key/val pairs in an obj for static data users and match the user id then retrieve the sheet
-- create /myrewards for each user (grande)
+- create /myrewards(name=optional) and /spendreward(name,type) for each user (grande)
     - we will need another sheet that tracks rewards according to what your total mileage is, and if you have cashed them in or not.
     - mia will need a command to mark off rewards so we don't have that responsibility anymore. takes weight off of tom and mia both
 - setup server at home
@@ -26,6 +22,10 @@ Donald
 
 
 Misc & up for grabs pending completion of current lists:
+- add utility function that checks all interactions for roles if they are in the sd.userid object and fire it during an interaction in index.js
+- update server nickname each time someone uses a command, or if they are not in the users table, concatenate '. When you get a chance, please use the **/addme** command :cow:'
+    - this will be a function in index.js likely
+- create a /submityear command. what to do with this? should we just have the dates as strings such in static data as "y3": "unix start - unix end"? what is the best way? <- not this way for sure, we need to keep run sheets and use static data to track timelines for each year: { 'y3': 'unix timestamp start - unix timestamp end' }
 - refactor /commands. the character limit per message is going to poop itself once we have too many commands
     - install handlebars and puppeteer. this is good practice for front end stuff.
 - create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param and will use the current /newrun file structure with edits to make sure they don't have a run on that date yet, or a run that has been submitted that current week
@@ -57,3 +57,10 @@ Misc & up for grabs pending completion of current lists:
 completed:
 - make /newrun error handling more descriptive for the user if they do something wrong
 - add more content to static data new run responses and greetings. need more variation as i have seen many repeats one after another
+- update /newrun to check for id in static data
+    - pull users sheet when heife signs in and set the static data users obj for quick check
+    - we need to pull data from server on startup and set it as object in static data
+- figure out a way to use a discord user id for the current sheet check, which is using first name last name
+    - likely we will do key/val pairs in an obj for static data users and match the user id then retrieve the sheet
+- lifetime miles (this is a grande task)
+- when a user enters /addme command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"

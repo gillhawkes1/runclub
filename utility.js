@@ -1,4 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { GuildMemberRoleManager } = require('discord.js');
 const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
 
@@ -9,71 +10,98 @@ const env = configfile.parsed;
 
 module.exports = {
 	async startUp(){
-		console.log('initiating startUp()...');
-		await this.getAllSheets();
-		console.log('sd.books');
-		console.log(sd.books);
+		try {
+			console.log('Initializing startUp()...');
+			await this.setUsers();
+			await this.setRunSheets();
+		} catch (error) {
+			console.log('error in startUp()');
+			console.log(error);
+		}
 	},
 
-	async getAllSheets(){
-		let reqct = 0;
-		for(const book of sd.bookNames){
-			const doc = new GoogleSpreadsheet(env[book]);
-			await doc.useServiceAccountAuth({ client_email: creds.client_email, private_key: creds.private_key });
-			reqct++;
-			await doc.loadInfo();
-			reqct++;
+	async setUsers() {
+		const users = await this.getSheet(env.BOOK_USER_ID,'users');
+		const userRows = await users.getRows();
+		let usersObj = {};
+		for(let i = 0; i < userRows.length; i++){
+			const userid = userRows[i].userid;
+			let name = userRows[i].fname + ' ' + userRows[i].lname;
+			usersObj[userid] = name;
+		}
+		sd.users = usersObj;
+		console.log('Local users have been set.')
+	},
 
-			let info = {};
-			info.sheets = [];
-			info.title = doc.title;
-			if(book == 'BOOK_USER_ID'){
-				const sheet = doc.sheetsByTitle['y3'];
-				console.log(doc.sheetsByTitle['y3']);
-				const rows = await sheet.getRows();
-				if(rows.length > 0){
-					//console.log('test data: ', test);
+	async setRunSheets() {
+		const runSheets = await this.getBook(env.BOOK_NEW_RUN);
+		//let runSheetsArr = runSheets.map(sheet => sheet.title);
+		let runSheetsArr = [];
+		for(let i = 0; i < runSheets.sheetCount; i++) {
+			runSheetsArr.push(runSheets.sheetsByIndex[i].title);
+		}
+		sd.runData.runSheetTitles = runSheetsArr;
+		console.log('Local run sheet titles have been set.');
+	},
 
-					//set headers and attributes
-					sd.books[book] = {};
-					sd.books[book].title = doc.sheetsByTitle['y3'].title;	
-					const headers = doc.sheetsByTitle['y3'].headerValues;
-					sd.books[book].headerValues = [];
-					sd.books[book].headerValues = headers;
-					
+	getUserById(userid){
+		return sd.users[userid] || null;
+	},
 
-					//set rows 
-					for(let j = 0; j < rows.length -1; j++){
-						//console.log(rows[j]);
-						//sd.books[book].
-						//console.log(sheet.headerValues[headers[j]])
-					}
-				}
+	getLifetimeMilesRow(rows, name) {
+		const searchName = this.formatName(name);
+		for(let i = 0; i < rows.length; i++){
+			if(rows[i].fname === searchName[0] && rows[i].lname === searchName[1]) {
+				return rows[i];
 			}
-		}			
-		console.log(sd.books);
-		/**			
-			//if sheets within book
-			if(doc.sheetsByIndex.length > 0){
-				for(let i = 0; i < doc.sheetsByIndex.length; i++){
-					const sheet = doc.sheetsByIndex[i];
-					const rows = await sheet.getRows();
-					reqct++;
-					//console.log(reqct);
-					//console.log(i);
-					console.log(doc.title, sheet.title);
-					console.log(rows);
-					
-					sd.books[i] = sheet.title;
-					sd.books[i].rows = rows;
+		}
+		return false;
+	},
 
-					info.sheets[i] = sheet.title;
-					//info.sheets[i].rows = rows;
-					setTimeout(() => {},2000);
-				}
+	formatName(name){
+		name = name.trim();
+		const fname = name.split(' ')[0];
+		let lname = name.split(' ');
+		lname[0] = '';
+		lname = lname.join(' ').trim();
+		return [fname,lname];
+	},
+
+	validateName(name,interaction) {
+		let resName = name;
+		const user_id = interaction.user.id;
+		// if they did not submit a name, return their matched userid to their name in the users table, or null if not found. 
+		if(resName === null) {
+			return this.getUserById(user_id);
+		} else {
+			resName = name.toLowerCase().trim();
+			// if they input a name, validate it if they are already have a run sheet or return null if no run sheet in that name
+			if (resName === sd.runData.runSheetTitles.find((sheetName) => sheetName === resName)){
+				return resName;
+			} else {
+				// check to see even though they provided a name, they are not in the users table. return false if nothing is found
+				return this.getUserById(user_id) !== null ? this.getUserById(user_id) : false;
 			}
- */
+		}
+	},
 
+	// TODO: refactor to grantRole(user,role); and create a function that is revokeRole(user,role); much more coherent that way. do logic in command that needs it
+	// set role ids in static data and pull from there
+	async grantMileageTierRole(interaction,newMileageTier,previousMileageTier) {
+		const memberRole = new GuildMemberRoleManager(interaction.member);
+        await interaction.guild.roles.fetch().then((res) => {
+			let newRole;
+            for(const [role,value] of res){
+				if (value.name === newMileageTier) {
+                    memberRole.add(role,'Added role because a new mileage tier was hit!');
+					newRole = value.name
+				}
+                if (value.name === previousMileageTier){
+                    memberRole.remove(role,'Removed role because a new mileage tier was hit.');
+                }
+            }
+			return newRole || false;
+        });
 	},
 
 	async getBook(bookid){

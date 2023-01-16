@@ -25,23 +25,22 @@ for (const file of commandFiles) {
 //when client is ready, run this code
 client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	if(sd.testing == true){
-		util.startUp();
-	}
-	console.log('Ready!');
+	util.startUp().then(() => {
+		console.log('Ready!');
+	});
 });
 
 //command execution
 client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+	if (!interaction.isChatInputCommand()) return;
 
-  //only allow certain channels to use /commands
-  if(sd.channels.heife_channels.includes(interaction.channelId) == false){
-	return interaction.reply({content: `Please only use commands in the <#1008443594715173024> channel :cow:`, ephemeral: true});
-  }
+	//only allow certain channels to use /commands
+	if(sd.channels.heife_channels.includes(interaction.channelId) == false){
+		return interaction.reply({content: `Please only use commands in the <#1008443594715173024> channel :cow:`, ephemeral: true});
+	}
 
-  //get commands and read
-  const command = client.commands.get(interaction.commandName);
+	//get commands and read
+	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
 
 	try {

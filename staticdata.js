@@ -19,19 +19,26 @@ module.exports = {
 			bot_testing: '996637178694213672',
 		},
 
-		bookNames: [
-			'BOOK_NEW_RUN',
-			'BOOK_RUN_TOTALS',
-			'BOOK_USER_ID',
-			'BOOK_GOOGLE_FORM_DUMP',
-			'BOOK_LIFETIME_DATA',
-		],
-
-		books: {
-		},
+		// this obj is set in util.startUp()
+		// format of obj: { 'userid1': 'fname1 lname1', 'userid2': 'fname2 lname2a lname2b' }
+		users: {},
 
 		runData: {
 			multiplier: 1,
+			// this object is set in util.startUp()
+			// format: ['fname1 lname1', 'fname2 lname2a lname2b']
+			runSheetTitles: {},
+		},
+
+		currentYear: 'y3',
+		years: {
+			'lifetime': 'lifetime',
+			'y2': '2021-2022',
+			'y3': '2022-2023',
+			'y4': '2023-2024',
+			'y5': '2024-2025',
+			'y6': '2025-2026',
+			'y7': '2026-2027',
 		},
 
 		adminids: [
