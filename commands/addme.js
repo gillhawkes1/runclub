@@ -5,6 +5,7 @@ const { sd } = require('./../staticdata.js');
 
 //protected vars import
 const varfile = require('dotenv');
+const { formatName, capsFirst, getUserById } = require('./../utility.js');
 const configfile = varfile.config();
 const env = configfile.parsed;
 
@@ -17,59 +18,54 @@ module.exports = {
             .setDescription('First and last name(s).')
             .setRequired(true)),
 	async execute(interaction) {
-        await interaction.deferReply();
         let reply = '';
-        const name = interaction.options.getString('name').toLowerCase();
-        let fname = name.split(' ')[0];
-        let lname = name.split(' ')[1];
+        let name = interaction.options.getString('name').toLowerCase();
+        name = formatName(name);
+        let fname = name[0];
+        let lname = name[1];
+        const fullName = `${fname} ${lname}`;
 
-        if(name.split(' ').length < 2){
-            return interaction.editReply('Please enter both first and last name when using **/addme**.');
+        // return and ask for last name if only one name provided
+        if(lname === ''){
+            return interaction.reply('Please enter both first and last name when using **/addme**.');
         }
-        //get user sheet for the current year
-        const sheet = await util.getSheet(env.BOOK_USER_ID,env.CURRENT_YEAR);
+        // check local for user in sd.users obj
+        const nameInUsers = util.getUserById(interaction.user.id);
+        if(nameInUsers !== null ){
+            return interaction.reply(`You are already in the system as **${util.capsFirst(nameInUsers)}**. Please inform an admin if this is a mistake.`)
+        }
 
-        //sheet should NEVER be undefined unless starting a new year
+        //defer reply; name is not in local users data and we have to make google sheets api calls
+        await interaction.deferReply();
+        const sheet = await util.getSheet(env.BOOK_USER_ID,'users');
         if(sheet != undefined){
-            const rows = await sheet.getRows();
-            for(let row of rows){
-                //return on user already in system
-                if(row.userid == interaction.user.id){
-                    console.log(name + ' tried to add themselves again.');
-                    return interaction.editReply(util.capsFirst(fname) + ', you are already in the system!');
-                }
-            }//if no return, add user below
+            const udata = { userid: interaction.user.id, fname: fname, lname: lname };
 
-            //add more than one last name to db
-            const udata = {userid: interaction.user.id, fname: fname, lname: lname}
-            if(name.split(' ').length > 2){
-                for(let i = 2; i < name.split(' ').length; i++){
-                    const prop = 'lname'+i;
-                    udata[prop] = name.split(' ')[i];
-                }
-            }
-            const headers = ['date','fname','lname','distance','time','comment','multiplier'];
-
-            //add user to user sheet
-            await util.addRowToSheet(env.BOOK_USER_ID,env.CURRENT_YEAR,udata);
+            //add user to user sheet, re-set local users obj
+            await util.addRowToSheet(env.BOOK_USER_ID,'users',udata);
             console.log('new user added: ',udata);
+            await util.setUsers();
 
             //check for run sheet from a google form transfer
-            const runSheet = await util.getSheet(env.BOOK_NEW_RUN,name);
+            const runSheet = await util.getSheet(env.BOOK_NEW_RUN,fullName);
             if(runSheet == undefined){
-                await util.addSheet(env.BOOK_NEW_RUN,name,headers);
-                console.log('new sheet added: ',udata);
+                const headers = ['date','fname','lname','distance','time','comment','multiplier'];
+                await util.addSheet(env.BOOK_NEW_RUN,fullName,headers);
+                console.log('run sheet added: ',udata);
+                await util.setRunSheets();
             }
+
             reply += util.randIndex(sd.greeting) + ' ' + util.capsFirst(fname) + '! Record a run with **/newrun**! :cow:';
 
             //check their server name and update it if it does not already contain their name
-/*             const currentNickname = interaction.member.nickname.toLowerCase();
+            const currentNickname = interaction.member.nickname.toLowerCase();
             if(util.isRole(interaction, 'Admin') == false && currentNickname.includes(fname) == false){
-                const newNickname = (fname + ' ' + lname.split('')[0]);
-                interaction.member.setNickname(util.capsFirst(newNickname));
-                reply += '\nI went ahead and changed your name to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
-            } */
-            
+                const newNickname = (`${fname} ${lname[0]}`);
+                console.log(`user: ${interaction.user.id} received a new nickname:`,util.capsFirst(newNickname));
+                interaction.member.setNickname(util.capsFirst(newNickname),'current nickname did not contain real name');
+                reply += '\nI went ahead and changed your server nickname to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
+            }
+
 			return interaction.editReply(reply);
         }else{
             return interaction.editReply('This user sheet doesn\'t exist!');
