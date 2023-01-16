@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, CommandInteractionOptionResolver } = require('discord.js');
 const util = require('./../utility.js');
 const { sd } = require('./../staticdata.js');
 const { users } = require('./../users.js');
@@ -12,10 +12,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('newrun')
 		.setDescription('Record a new run!')
-		.addStringOption(option => 
-            option.setName('name')
-            .setDescription('First and last name')
-            .setRequired(true))
 		.addNumberOption(option => 
             option.setName('distance')
             .setDescription('Run distance')
@@ -27,41 +23,60 @@ module.exports = {
 		.addStringOption(option => 
 			option.setName('comment')
 			.setDescription('A brief comment about your run')
+			.setRequired(false))
+		.addStringOption(option => 
+			option.setName('name')
+			.setDescription('First and last name')
 			.setRequired(false)),
 
 	async execute(interaction) {
-		await interaction.deferReply();
-		const name = interaction.options.getString('name').toLowerCase().trim();
-		let fname = name.split(' ')[0];
-		let lname = '';
-		if (name.split(' ').length > 1) {
-			lname = name.split(' ')[1];
-		} else {
-			return interaction.editReply('Please try **/newrun** again with your first and last name. If you previously submitted a run in the google form, you will use the same first and last name that you did there. If you continue to get errors with the correct name, contact <@332685115606171649>.');
+
+		// update /newrun to check for hitting a milestone tier each time a new run is recorded. update milestones_available if former is true
+		// update /newrun to re-index the rows according to (ask cliff/vanessa if this even matters) who has the most lifetime miles, or the current leaderboard in the current year
+
+		// TODO: if day is not tuesday, tell them to use /previousrun command here 
+		// if(new Date().toLocaleString('en-us', { weekday: 'long' }).toLowerCase() !== 'tuesday'){
+		// 	return interaction.reply('Your run was not submitted since it is not Tuesday. Please use **/previousrun** to submit a run record when you are submitting a run that is not on a Tuesday. The **date** option will allow you to choose the day you ran on! :cow:');
+		// }
+
+		let name = interaction.options.getString('name');
+		name = util.validateName(name,interaction);
+		// if name comes back as null, they are not on the users table, so they must provide a name to check for their run sheet. tell them to use /addme so they don't need to provide a name on submissions
+		if (name === null) {
+			return interaction.reply(`Hello, ${util.capsFirst(interaction.member.nickname)}! You are not in the system yet. If you use the **/addme** command (submit your first and last name), you can use /newrun without including a name. Otherwise, you will need to provide your first and last name to submit a run each time you use /newrun. Using **/addme** one time so you never have to include your name when you submit a run is the best option. Trust me, I\'m a cowputer! :cow:`);
 		}
 
+		// if name comes back as false from validation, it is not on a run sheet or in users table
+		if (name === false) {
+			return interaction.reply('Your submitted name was not found in our users or run sheets database. Please try /newrun again with your first and last name if you know you already have a run sheet. If you previously submitted a run in the google form, you will use the same first and last name that you did there **(so check your spelling!)**. If you continue to get errors with the correct name, contact <@332685115606171649>. **To avoid all of these errors in the future, use */addme* so you won\'t have to use a name each time you submit a run!** <- Heife recommends this as a solution :cow:');
+		}
+
+		// if they do not have a message returned at this stage, they pass name requirements have have an existing sheet. continue with script
+		let fname = util.formatName(name)[0];
+		let lname = util.formatName(name)[1];
+		if (lname === '') {
+			return interaction.reply('Please try **/newrun** again with your first and last name. If you previously submitted a run in the google form, you will use the same first and last name that you did there **(so check your spelling!)**. If you continue to get errors with the correct name, contact <@332685115606171649>.');
+		}
+		await interaction.deferReply();
+
 		const distance = interaction.options.getNumber('distance');
-		const time = interaction.options.getString('time');
+		const time = interaction.options.getString('time'); 
 		let comment = interaction.options.getString('comment');
-		comment = comment == null ? '' : comment;
+		comment = comment === null ? '' : comment;
+
 		const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
-
-		//if their sheet exists 
-		if(sheet != undefined){
+		if (sheet) {
 			const rows = await sheet.getRows();
-
-			//if sheet has rows
+			//if sheet has rows, check for recent submitted run and make sure they don't have two in the same day.
 			if(rows.length > 0){
 				const lastRun = rows.length-1;
 				//if they already recorded a run for the day
 				if(rows[lastRun].date == util.getToday()){
 					console.log(name + ' tried to add a second run for the day.');
-					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes. But foolish.');
+					return interaction.editReply('Heife sees all, and he sees you trying to record more than one run for today. Sneaky, yes. But foolish. If you forgot to submit your run last week and you are doing both today\'s and last weeks, use the google form for the other run. Gill is creating a **/previousrun** command to submit runs you forgot about so you can never miss a submission!');
 				}
 			}
-
 			const today = util.getToday();
-			
 			const newRunRow = {
 				date: today,
 				fname: fname,
@@ -71,24 +86,51 @@ module.exports = {
 				comment: comment,
 				multiplier: sd.runData.multiplier
 			}
-
+			// if comment, add it to their return message for everyone to see!
+			let reply = comment !== '' ? `${util.capsFirst(fname)}: "${comment}"\n` : comment;
+			reply += `${util.randIndex(sd.newRunResponse.salute)} ${util.randIndex(sd.newRunResponse.remark)}`;
 			await util.addRowToSheet(env.BOOK_NEW_RUN,name,newRunRow);
-			console.log('new run recorded: ',newRunRow);
-			let reply = util.randIndex(sd.newRunResponse.salute) + ' ' + util.randIndex(sd.newRunResponse.remark);
+			console.log('new run recorded: ', newRunRow);
 
-			//check their server name and update it if it does not already contain their name
-/*             const currentNickname = interaction.member.nickname.toLowerCase();
-            if(util.isRole(interaction, 'Admin') == false && currentNickname.includes(fname) == false){
-                const newNickname = (fname + ' ' + lname.split('')[0]);
-                interaction.member.setNickname(util.capsFirst(newNickname));
-                reply += '\nI went ahead and changed your name to ' + util.capsFirst(newNickname) + ' so people know who you are! :cowboy:';
-            } */
-			return interaction.editReply(reply);	
+			//update yearly and lifetime miles after their submission to their personal sheet
+			const lifetimeSheet = await util.getSheet(env.BOOK_RUN_TOTALS,'lifetime');
+			if(lifetimeSheet) {
+				const lifetimeRows = await lifetimeSheet.getRows();
+				let foundRecord = false;
+				//TODO: get rid of this loop and use util.getLifetimeMilesRow();
+				for(let i = 0; i < lifetimeRows.length; i++){
+					if(lifetimeRows[i].fname === fname && lifetimeRows[i].lname === lname) {
+						console.log('record found');
+						foundRecord = true;
+						lifetimeRows[i].lifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
+						lifetimeRows[i][sd.currentYear] = parseFloat(lifetimeRows[i][sd.currentYear]) + parseFloat(distance * sd.runData.multiplier);
+						// TODO: check for milestones after updated lifetime miles here
+						// TODO: send this to db: let rewards = JSON.stringify(sd.rewards);
+						// TODO: do this when getting rewards from db: let rewards = JSON.parse(lifetimeRows[i].milestones_available)
+						await lifetimeRows[i].save();
+						break;
+					}
+				}
 
-		//else if they are not in the system yet (they don't have a sheet to record their runs)
-		}else{
-			console.log(name + ' was not in the system when they tried /newrun');
-			return interaction.editReply('You are not in the system yet (make sure your name was spelled correctly, as this can cause a problem: **' + util.capsFirst(name) + '**). Please use **/addme** to add yourself into the system, then record your run with **/newrun**. If you believe you are already in the system and this is an error, contact <@332685115606171649>.');
+				// add them to the lifetime miles sheet if they do not have a record in there yet
+				// this will only be true if they have not submitted a run sheet before or been recorded.
+				if (!foundRecord) {
+					console.log(`creating a lifetime record for ${name}, as no record was found`);
+					// create new lifetime row with their first submission to the db
+					let newLifetimeRow = {
+						user_id: interaction.user.id,
+						fname: fname,
+						lname: lname,
+						lifetime: parseFloat(distance * sd.runData.multiplier),
+					}
+					newLifetimeRow[sd.currentYear] = parseFloat(distance * sd.runData.multiplier);
+					await util.addRowToSheet(env.BOOK_RUN_TOTALS,'lifetime',newLifetimeRow);
+					console.log('newLifetimeRow', newLifetimeRow);
+				}
+			}
+			return interaction.editReply(reply);
+		} else {
+			return interaction.reply(`Something went wrong when trying to get a sheet for ${name}. <@332685115606171649>, help! `)
 		}
 	},
 };
