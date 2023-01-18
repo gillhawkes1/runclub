@@ -30,8 +30,8 @@ module.exports = {
             let reply = '';
             let returnData = {records: 0, newSheets: 0, sheetExists: 0, badTimeNames: [], requests: 2};
             for(let i = 0; i < rows.length; i++){
-                //if a record has not been transferred yet
-                if(rows[i].transfer_status != 1){
+                //check for record timestamp and if a record has not been transferred yet
+                if(rows[i].timestamp != undefined && rows[i].transfer_status != 1){
                     //control requests per minute and break out of loop
                     if(returnData.requests > 40){
                         reply += 'I had to stop running the /pushform command early because there were too many records to push. Just use **/pushform** again to continue.\n';
@@ -58,13 +58,13 @@ module.exports = {
                     const sheet = await util.getSheet(env.BOOK_NEW_RUN,name);
                     returnData.requests++;
                     if(sheet != undefined){
-                        console.log('EXISTING SHEET, added row:', pushdata);
+                        console.log('sheet found, added row:', pushdata);
                         await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
                         returnData.requests++;
                         returnData.sheetExists++;
                     }else{ //create new sheet and then add their data
                         const headers = ['date','fname','lname','distance','time','comment','multiplier'];
-                        console.log('new SHEET, added row:', pushdata);
+                        console.log('NEW SHEET, added row:', pushdata);
                         await util.addSheet(env.BOOK_NEW_RUN,name,headers);
                         returnData.requests++;
                         await util.addRowToSheet(env.BOOK_NEW_RUN,name,pushdata);
@@ -102,12 +102,11 @@ module.exports = {
                 } // end records that need transferring
             }//end for loop
 
-            let plural1 = returnData.records > 1 ? 'were' : 'was';
-            let plural2 = returnData.newSheets > 1 ? 'were' : 'was';
+            let plural = returnData.records > 1 ? 'were' : 'was';
 
             //if bad times were submitted to form
             if(returnData.badTimeNames.length){
-                reply += `${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.\n`;
+                reply += `${returnData.records} records ${plural} pushed.\n${returnData.newSheets} new run sheet(s) created.\n`;
                 for(let i = 0; i <= returnData.badTimeNames.length - 1; i++){
                     //if last person with bad data
                     if(i == returnData.badTimeNames.length - 1){
@@ -125,7 +124,7 @@ module.exports = {
                 return interaction.editReply({content: reply});
             }
             if(returnData.records > 0){
-                return interaction.editReply(`${returnData.records} records ${plural1} pushed.\n${returnData.newSheets} new run sheet(s) ${plural2} created.`);
+                return interaction.editReply(`${returnData.records} records ${plural} pushed.\n${returnData.newSheets} new run sheet(s) created.`);
             } else {
                 return interaction.editReply('There was no data to push.');
             }
