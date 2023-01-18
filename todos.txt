@@ -1,6 +1,7 @@
 todos:
 
 Gill
+- create /mystats with two params: **type** (avg distance/avg pace/weeks ran) + **time period** (lifetime/2023/2022)
 - **NOT SURE IF THIS IS POSSIBLE WITH CURRENT DISCORD.JS LIBRARY. PREVENTS @everyone PINGS** /announcement command to ping @everyone from the #announcements channel. edit message as needed
     - client.channels.cache.get('CHANNEL ID').send('Hello here!')
     - const bot = new Discord.Client({disableEveryone: False});
