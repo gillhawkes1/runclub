@@ -12,8 +12,13 @@ module.exports = {
 		.setName('commands')
 		.setDescription('Get bot commands and their descriptions.'),
 	async execute(interaction) {
-		const self = this;
-		await interaction.reply(self.getCommands());
+		try {
+			const self = this;
+			await interaction.reply(self.getCommands());
+		} catch (error) {
+			console.log(error);
+			return interaction.reply('Something went wrong using this command!');
+		}
 	},
 	getCommands(){
 		var commandsList = '';

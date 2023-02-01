@@ -17,8 +17,13 @@ module.exports = {
             .setDescription('param description')
             .setRequired(true)),
 	async execute(interaction) {
-        const param = interaction.options.getString('param');            
-        return interaction.reply('reply');
+        try {
+            const param = interaction.options.getString('param');            
+            return interaction.reply('reply');
+        } catch (error) {
+            console.log(error);
+            return interaction.reply('Something went wrong using this command!');
+        }
     }
 }
 

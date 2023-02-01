@@ -16,13 +16,17 @@ module.exports = {
             .setDescription('multiplier amount')
             .setRequired(true)),
 	async execute(interaction) {
-        if(util.isRole(interaction, 'Admin') == false){
-            return interaction.reply('You are not an admin.');
+        try {
+            if(util.isRole(interaction, 'Admin') == false){
+                return interaction.reply('You are not an admin. lol nice try');
+            }
+            const m = interaction.options.getNumber('multiplier');
+            let res = util.setMultiplier(m);
+            console.log(res);
+            return interaction.reply({content: 'Multiplier is now set to ' + m, ephemeral: true});
+        } catch (error) {
+            console.log(error);
+            return interaction.reply('Something went wrong using this command!');
         }
-        const m = interaction.options.getNumber('multiplier');
-        let res = util.setMultiplier(m);
-        console.log(res);
-
-        return interaction.reply({content: 'Multiplier is now set to ' + m, ephemeral: true});
     }
 }
