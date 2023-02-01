@@ -8,7 +8,12 @@ module.exports = {
 		.setDescription('Heife speaks.'),
 
 	async execute(interaction) {
-		await interaction.reply(util.randIndex(sd.heifeTips));
+		try {
+			await interaction.reply(util.randIndex(sd.heifeTips));
+		} catch (error) {
+			console.log(error);
+			return interaction.reply('Something went wrong using this command!');
+		}
 	},
 
 };

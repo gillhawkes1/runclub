@@ -12,9 +12,14 @@ module.exports = {
 		.setName('getmultiplier')
 		.setDescription('Get the multiplier for runs.'),
 	async execute(interaction) {
-        if(util.isRole(interaction, 'Admin') == false){
-            return interaction.reply('You are not an admin.');
+        try {
+            if(util.isRole(interaction, 'Admin') == false){
+                return interaction.reply('You are not an admin.');
+            }
+            return interaction.reply({content: 'Multiplier is currently set to ' + sd.runData.multiplier, ephemeral: true});
+        } catch (error) {
+            console.log(error);
+            return interaction.reply('Something went wrong using this command!');
         }
-        return interaction.reply({content: 'Multiplier is currently set to ' + sd.runData.multiplier, ephemeral: true});
     }
 }
