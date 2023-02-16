@@ -60,7 +60,7 @@ module.exports = {
     
                 //check their server name and update it if it does not already contain their name\
                 let currentNickname = '';
-                if(interaction.server.nickname) {
+                if(interaction.member.nickname) {
                     currentNickname = interaction.member.nickname.toLowerCase();
                 }
                 if(util.isRole(interaction, 'Admin') == false && currentNickname.includes(fname) == false){
