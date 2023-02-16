@@ -44,7 +44,7 @@ module.exports = {
 			name = util.validateName(name,interaction);
 			// if name comes back as null, they are not on the users table, so they must provide a name to check for their run sheet. tell them to use /addme so they don't need to provide a name on submissions
 			if (name === null) {
-				return interaction.reply(`Hello, ${interaction.member.nickname}! You are not in the system yet. If you use the **/addme** command (submit your first and last name), you can use /newrun without including a name. Otherwise, you will need to provide your first and last name to submit a run each time you use /newrun. Using **/addme** one time so you never have to include your name when you submit a run is the best option. Trust me, I\'m a cowputer! :cow:`);
+				return interaction.reply(`Hello! You are not in the system yet. If you use the **/addme** command (submit your first and last name), you can use /newrun without including a name. Otherwise, you will need to provide your first and last name to submit a run each time you use /newrun. Using **/addme** one time so you never have to include your name when you submit a run is the best option. Trust me, I\'m a cowputer! :cow:`);
 			}
 	
 			// if name comes back as false from validation, it is not on a run sheet or in users table
