@@ -2,6 +2,11 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { GuildMemberRoleManager } = require('discord.js');
 const creds = require('./client_secret.json');
 const { sd } = require('./staticdata.js');
+const fs = require('node:fs');
+const path = require('node:path');
+const nodeUtil = require('node:util');
+const nodeReadFile = nodeUtil.promisify(fs.readFile);
+const puppeteer = require('puppeteer');
 
 //protected vars import
 const varfile = require('dotenv');
@@ -198,5 +203,41 @@ module.exports = {
 		const prev = sd.runData.multiplier;
 		sd.runData.multiplier = multiplier;
 		return prev, sd.runData.multiplier;
+	},
+
+	getFile(filePath,filename) {
+		return path.resolve(filePath,filename)
+	},
+
+	getHbsTemplate(filename) {
+		return this.getFile(`${env.ROOT_PATH}/templates`,`${filename}.hbs`);
+	},
+
+	async readFile(filePath) {
+		let file = await nodeReadFile(filePath,'utf8');
+		return file;
+	},
+
+	async createPageScreenshot(htmlContent, screenshotOptions = {}) {
+		try {
+			const browser = await puppeteer.launch();
+			const page = await browser.newPage();
+			await page.setContent(htmlContent);
+			await page.screenshot(screenshotOptions);
+		} catch (error) {
+			console.log(error);
+		}
+
+	},
+
+	sortRuns(a, b){
+		if(parseFloat(a.miles) > parseFloat(b.miles)) {
+			return -1;
+		}
+		if(parseFloat(a.miles) < parseFloat(b.miles)) {
+			return 1;
+		}
+		return 0;
 	}
+
 }
