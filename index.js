@@ -34,12 +34,6 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	if(interaction.user.id != '332685115606171649'){
-		return interaction.reply('Gill is writing new functionality! Try again some other time.');
-	}
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 	//only allow certain channels to use /commands
 	if(sd.channels.heife_channels.includes(interaction.channelId) == false){
 		return interaction.reply({content: `Please only use commands in the <#1008443594715173024> channel :cow:`, ephemeral: true});
