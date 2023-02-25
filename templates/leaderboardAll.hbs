@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{!-- <link rel="stylesheet" href="leaderboardAll.css" type="text/css" /> --}}
+    <style>
+        body {
+            background-color: rgb(0, 18, 53);
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+        }
+
+        .title {
+            font-size: 25px;
+            color: white;
+        }
+
+        .leaderboard-table {
+            color: white;
+        }
+
+        .table-row > td.miles-cell, .table-row > td.miles, .table-row > td.rank-cell {
+            text-align: right;
+        }
+
+        .table-row td {
+            font-size: 15;
+            padding-left: 3px;
+            padding-top: 1px;
+            padding-right: 3px;
+            padding-bottom: 2px;
+        }
+
+        .table-row td.rank-cell {
+            {{!-- padding-right: 3px; --}}
+        }
+
+        th.table-header-Runner {
+            text-align: left;
+        }
+
+        .date {
+            float: right;
+            font-size: 25px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    {{#if @root.data}}
+    <div class="leaderboard">
+        <div class="title">ACRC Leaderboard: {{@root.timeInterval}} miles <span class="date">{{@root.dateTime}}</span></div>
+        <div class="table-div">
+            <table class="leaderboard-table" style="border: black;">
+                <thead>
+                    <tr>
+                        {{#each @root.headers as | header |}}
+                        <th class="table-header-{{header}}">{{header}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each @root.data.runners as | runner |}}
+                    <tr class="table-row">
+                        <td class="rank-cell">{{runner.rank}}</td>
+                        <td class="name-cell">{{runner.fname}} {{runner.lname}}</td>
+                        <td class="miles-cell">{{runner.miles}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{else}}
+    <div>
+        <h1 class="title">There was an error getting data.</h1>
+    </div>
+    {{/if}}
+</body>
+</html>
