@@ -14,11 +14,12 @@ const configfile = varfile.config();
 const env = configfile.parsed;
 
 module.exports = {
-	async startUp(){
+	async startUp(client){
 		try {
 			console.log('Initializing startUp()...');
 			await this.setUsers();
 			await this.setRunSheets();
+			await this.setGuildRoles(client);
 		} catch (error) {
 			console.log('error in startUp()');
 			console.log(error);
@@ -47,6 +48,29 @@ module.exports = {
 		}
 		sd.runData.runSheetTitles = runSheetsArr;
 		console.log('Local run sheet titles have been set.');
+	},
+
+	async setGuildRoles(client) {
+		const armoredCalves = client.guilds.cache.find((channel) => {
+			return channel.id === env.GUILD_ID;
+		});
+		const guildRoles = armoredCalves.roles.cache.map((role) => {
+			return role;
+		});
+		
+		const mileageRoles = [];
+		armoredCalves.roles.cache.forEach((role) => {
+			const thisRole = {};
+			const roleDistance = role.name.split(' ')[0];
+			if(parseInt(roleDistance)) {
+				const intDistance = parseInt(roleDistance);
+				thisRole[intDistance] = role.name;
+				mileageRoles.push(thisRole);
+			}
+		});
+		sd.mileageRoles = mileageRoles;
+		sd.guildRoles = guildRoles;
+		console.log('Local roles have been set.');
 	},
 
 	getUserById(userid){
@@ -90,23 +114,93 @@ module.exports = {
 		}
 	},
 
-	// TODO: refactor to grantRole(user,role); and create a function that is revokeRole(user,role); much more coherent that way. do logic in command that needs it
-	// set role ids in static data and pull from there
-	async grantMileageTierRole(interaction,newMileageTier,previousMileageTier) {
-		const memberRole = new GuildMemberRoleManager(interaction.member);
-        await interaction.guild.roles.fetch().then((res) => {
-			let newRole;
-            for(const [role,value] of res){
-				if (value.name === newMileageTier) {
-                    memberRole.add(role,'Added role because a new mileage tier was hit!');
-					newRole = value.name
-				}
-                if (value.name === previousMileageTier){
-                    memberRole.remove(role,'Removed role because a new mileage tier was hit.');
+	grantMileageTierRole(interaction,lifetimeMiles) {
+        try {
+            // if lifetime total is eligible for role
+            let newMileageTier = false;
+            if(lifetimeMiles >= parseInt(Object.keys(sd.mileageRoles[0])) && lifetimeMiles <= parseInt(Object.keys(sd.mileageRoles[sd.mileageRoles.length-1]))) {
+                const memberRole = new GuildMemberRoleManager(interaction.member);
+
+                //get all roles of member
+                const myRoles = memberRole.cache.map((role) => {
+                    return role;
+                });
+
+                for(let i = 0; i < sd.mileageRoles.length; i++) {
+                    let previousRoleMiles = false, previousRoleName = false, nextRoleMiles = false, nextRoleName = false;
+                    const thisRoleMiles = parseInt(Object.keys(sd.mileageRoles[i])[0]);
+                    const thisRoleName = Object.values(sd.mileageRoles[i])[0];
+                    if(i > 0) {
+                        previousRoleMiles = parseInt(Object.keys(sd.mileageRoles[i-1])[0]);
+                        previousRoleName = Object.values(sd.mileageRoles[i-1])[0];
+                    }
+                    if(i !== sd.mileageRoles.length - 1) {
+                        nextRoleMiles = parseInt(Object.keys(sd.mileageRoles[i+1])[0]);
+                        nextRoleName = Object.values(sd.mileageRoles[i+1])[0];
+                    }
+
+                    // if first index tier only
+                    if (i === 0 && !previousRoleMiles && lifetimeMiles >= parseInt(Object.keys(sd.mileageRoles[i])[i]) && lifetimeMiles < parseInt(Object.keys(sd.mileageRoles[i+1])[i])) {
+                        const roleToGrant = sd.guildRoles.find((role) => {
+                            return role.name === thisRoleName;
+                        });
+                        //check if it exists. if not, grant first tier role
+                        if(!myRoles.find((role) => role === roleToGrant)) {
+                            memberRole.add(roleToGrant, 'Adding role for hitting new mileage tier');
+                            newMileageTier = `You are now part of the ${roleToGrant.name}!`;
+                            break;
+                        }
+                    }
+
+                    // if not first or last index tier
+                    if (previousRoleMiles && nextRoleMiles) {
+                        if(lifetimeMiles >= thisRoleMiles && lifetimeMiles < nextRoleMiles) {
+                            const roleToGrant = sd.guildRoles.find((role) => {
+                                return role.name === thisRoleName;
+                            });
+
+                            // check for previous tier to remove if present
+                            const previousRole = myRoles.find((role) => role.name === previousRoleName);
+                            if(previousRole) {
+                                memberRole.remove(previousRole,'Removing role for hitting new mileage tier');
+                            }
+
+                            //check for current tier before adding it
+                            if(!myRoles.find((role) => role === roleToGrant)) {
+                                memberRole.add(roleToGrant, 'Adding role for hitting new mileage tier');
+                                newMileageTier = `You are now part of the ${roleToGrant.name}!`;
+                                break;
+                            }
+                        }
+                    }
+
+                    //if last index tier only
+                    if(!nextRoleMiles && lifetimeMiles >= parseInt(Object.keys(sd.mileageRoles[i])[0])) {
+                        const roleToGrant = sd.guildRoles.find((role) => {
+                            return role.name === thisRoleName;
+                        });
+
+                        // check for previous tier to remove if present
+                        const previousRole = myRoles.find((role) => role.name === previousRoleName);
+                        if(previousRole) {
+                            memberRole.remove(previousRole,'Removing role for hitting new mileage tier');
+                        }
+
+                        //check for current tier before adding it
+                        if(!myRoles.find((role) => role === roleToGrant)) {
+                            memberRole.add(roleToGrant, 'Adding role for hitting new mileage tier');
+                            newMileageTier = `You are now part of the ${roleToGrant.name}!`;
+                            break;
+                        }
+                    }
+
                 }
             }
-			return newRole || false;
-        });
+            return newMileageTier;
+
+        } catch (error) {
+            console.log(error);
+        }
 	},
 
 	async getBook(bookid){

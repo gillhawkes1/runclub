@@ -25,7 +25,7 @@ for (const file of commandFiles) {
 //when client is ready, run this code
 client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	util.startUp().then(() => {
+	util.startUp(client).then(() => {
 		console.log('Ready!');
 	});
 });
