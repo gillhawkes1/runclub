@@ -105,7 +105,8 @@ module.exports = {
 							foundRecord = true;
 							lifetimeRows[i].lifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
 							lifetimeRows[i][sd.currentYear] = parseFloat(lifetimeRows[i][sd.currentYear]) + parseFloat(distance * sd.runData.multiplier);
-							// TODO: check for milestones after updated lifetime miles here
+							const newRole = util.grantMileageTierRole(lifetimeRows[i].lifetime);
+							reply += newRole ? `Congrats! ${newRole} ` : '';
 							// TODO: send this to db: let rewards = JSON.stringify(sd.rewards);
 							// TODO: do this when getting rewards from db: let rewards = JSON.parse(lifetimeRows[i].milestones_available)
 							await lifetimeRows[i].save();
