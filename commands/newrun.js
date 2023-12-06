@@ -103,6 +103,11 @@ module.exports = {
 						if(lifetimeRows[i].fname === fname && lifetimeRows[i].lname === lname) {
 							console.log('record found');
 							foundRecord = true;
+
+							// if their user id is not in the row yet (not used /addme but have submitted runs before using first name and last name)
+							if(!lifetimeRows[i].user_id) {
+								lifetimeRows[i].user_id = interaction.user.id;
+							}
 							lifetimeRows[i].lifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
 							lifetimeRows[i][sd.currentYear] = parseFloat(lifetimeRows[i][sd.currentYear]) + parseFloat(distance * sd.runData.multiplier);
 							const newRole = util.grantMileageTierRole(interaction, parseFloat(lifetimeRows[i].lifetime));

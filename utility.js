@@ -147,7 +147,7 @@ module.exports = {
                         //check if it exists. if not, grant first tier role
                         if(!myRoles.find((role) => role === roleToGrant)) {
                             memberRole.add(roleToGrant, 'Adding role for hitting new mileage tier');
-                            newMileageTier = `You are now part of the ${roleToGrant.name}!`;
+                            newMileageTier = ` You are now part of the ${roleToGrant.name}!`;
                             break;
                         }
                     }
