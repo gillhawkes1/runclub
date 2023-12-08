@@ -6,21 +6,7 @@ Gill
     - client.channels.cache.get('CHANNEL ID').send('Hello here!')
     - const bot = new Discord.Client({disableEveryone: False});
 - create a setTimeout() for /pushform to check the server for new data so i don't have to do it at run club or before run club each week
-- create /myrewards(name=optional) and /spendreward(name,type) for each user (grande)
-    - we will need another sheet that tracks rewards according to what your total mileage is, and if you have cashed them in or not.
-    - mia will need a command to mark off rewards so we don't have that responsibility anymore. takes weight off of tom and mia both
 - setup server at home
-
-Donald
-- create /routes select list and delete the current commands for the routes. you can do this by using the .addStringOption() method
-    - check date and make sure they are getting the correct map if it is daylight savings or not
-        - try getting the 1st/2nd sunday of november/march and check to see if it is past or before that date. set maps to variables with ternary operators.
-    - create the actual routes in google maps and use the urls
-    - return routes they pick
-    - we need routes for distances 1,2,3,4,5 miles for summer and winter 
-- come up with a fun command that users can play with! maybe its a tic-tac-toe game, maybe something else!
-    - bottom line is i want more interaction with the bot, and this is a spectacular way to do that (create a game) :)
-
 
 Misc & up for grabs pending completion of current lists:
 - add utility function that checks all interactions for roles if they are in the sd.userid object and fire it during an interaction in index.js
@@ -65,3 +51,4 @@ completed:
     - likely we will do key/val pairs in an obj for static data users and match the user id then retrieve the sheet
 - lifetime miles (this is a grande task)
 - when a user enters /addme command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"
+- create /myrewards and /redeemreward for each user
