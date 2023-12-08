@@ -17,27 +17,21 @@ Misc & up for grabs pending completion of current lists:
     - install handlebars and puppeteer. this is good practice for front end stuff.
 - create command /previousrun or something for people that forgot to submit the previous week so in the event of a muliplier they don't sneak double miles. this will involve a date param and will use the current /newrun file structure with edits to make sure they don't have a run on that date yet, or a run that has been submitted that current week
 - assign roles when mileage tiers are hit
-- update /pushform to include better response to command sender
-    - were bad times handled correctly?
-    - what time was submitted to google if needed to be handled? was it good for google or did it fuck up? good format: 00:00.000
-- /leaderboard command. need two: top and relative to the user who runs the command because of character limits
-    - this will be the same as the refactor for /commands. we need to render an html page with the leaderboard. pass a selectable option:
-        - /leaderboard all
-        - /leaderboard relative (or /leaderboard me, i can't decide)
-        - this will render an html page with ALL peeps on the leaderboard, or the top 5 then a line with (......), then middle 5 where the user that submitted the command is relative to the others around them.
-        - ex:
-            1. runner one: 99 mi
-            2. runner two: 98 mi
-            3. runner three: 97 mi
-            4. runner four: 96 mi
-            5. runner five: 95 mi
-            ........
-            14. runner fourteen: 79 mi
-            15. runner fifteen: 78 mi
-            16. user that submitted the command: 77 mi
-            17. runner seventeen: 76 mi
-            18. runner eighteen: 75 mi
-            ......and X more runners below
+- /leaderboard relative (or /leaderboard me, i can't decide)
+    - this will render an html page with ALL peeps on the leaderboard, or the top 5 then a line with (......), then middle 5 where the user that submitted the command is relative to the others around them.
+    - ex:
+        1. runner one: 99 mi
+        2. runner two: 98 mi
+        3. runner three: 97 mi
+        4. runner four: 96 mi
+        5. runner five: 95 mi
+        ........
+        14. runner fourteen: 79 mi
+        15. runner fifteen: 78 mi
+        16. user that submitted the command: 77 mi
+        17. runner seventeen: 76 mi
+        18. runner eighteen: 75 mi
+        ......and X more runners below
 - check untappd api to connect AC beers to a command /taplist or something fun that doesn't involve run data
 
 
@@ -52,3 +46,7 @@ completed:
 - lifetime miles (this is a grande task)
 - when a user enters /addme command, make sure their nickname in the guild is readable aka "Gill H. or Gill" and NOT "diesWithoutGrace"
 - create /myrewards and /redeemreward for each user
+- /leaderboard command. need two: top and relative to the user who runs the command because of character limits
+- update /pushform to include better response to command sender
+    - were bad times handled correctly?
+    - what time was submitted to google if needed to be handled? was it good for google or did it fuck up? good format: 00:00.000
