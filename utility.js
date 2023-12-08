@@ -206,8 +206,6 @@ module.exports = {
 	grantRewards(previousLifetime, newLifetime ,rewardsObjParsed) {
 		try {
 			let rewardMiles = rewardsObjParsed.map((reward) => { return reward.miles });
-			rewardMiles.sort(function(a, b) { return a - b });
-
 			const nextRewardObj = rewardsObjParsed.find((milesObj) => {
 				return newLifetime >= milesObj.miles && milesObj.earned === false;
 			});

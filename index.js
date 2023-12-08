@@ -44,9 +44,6 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-		if(interaction.user.id != '332685115606171649'){
-			return interaction.reply('Gill is fixing a bug! Try again some other time.');
-		}
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
