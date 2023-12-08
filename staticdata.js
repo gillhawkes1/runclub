@@ -5,11 +5,13 @@ module.exports = {
         "1008443594715173024", //#summon-heife
         "996637178694213672", //#bot-testing
         "996429651050246235", //#admin-chat
+        "1008443594715173024", //#staff-chat
       ],
 
       welcome_rules_links: "996428352443400213",
       announcements: "996428352443400214",
       admin_chat: "996429651050246235",
+      staff_chat: "1008443594715173024",
 
       acrc_chat: "996428352443400217",
       photos: "996430436823740476",
