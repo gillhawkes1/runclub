@@ -15,28 +15,38 @@ module.exports = {
 	async execute(interaction) {
     let rewards = [];
     let rewardOptionsForMessage = [];
-    if (Object.keys(sd.users).includes(interaction.user.id)) {
-      const lifetimeSheet = await util.getSheet(env.BOOK_RUN_TOTALS,"lifetime");
-      const lifetimeRows = await lifetimeSheet.getRows();
-      for (let i = 0; i < lifetimeRows.length; i++) {
-        const row = lifetimeRows[i];
-        if (row.user_id === interaction.user.id) {
-          rewards = JSON.parse(row.milestones);
-
-          for (const reward of rewards) {
-            if (reward.earned && !reward.spent) {
-              const option = new StringSelectMenuOptionBuilder()
-                .setLabel(`${reward.text}`)
-                .setDescription(`The reward for ${reward.miles} miles!`)
-                .setValue(`${reward.miles}`);
-              rewardOptionsForMessage.push(option);
+    try {
+      if (Object.keys(sd.users).includes(interaction.user.id)) {
+        const lifetimeSheet = await util.getSheet(env.BOOK_RUN_TOTALS,"lifetime");
+        const lifetimeRows = await lifetimeSheet.getRows();
+        for (let i = 0; i < lifetimeRows.length; i++) {
+          const row = lifetimeRows[i];
+          if (row.user_id === interaction.user.id) {
+            if(row.milestoes) {
+              rewards = JSON.parse(row.milestones)
+            } else {
+              rewards = [];
+            }
+            for (const reward of rewards) {
+              if (reward.earned && !reward.spent) {
+                const option = new StringSelectMenuOptionBuilder()
+                  .setLabel(`${reward.text}`)
+                  .setDescription(`The reward for ${reward.miles} miles!`)
+                  .setValue(`${reward.miles}`);
+                rewardOptionsForMessage.push(option);
+              }
             }
           }
         }
+      } else { 
+        await interaction.reply({ content: 'You are not in the system yet, please use **/addme** and follow the command instructions to submit your name before redeeming any rewards!'});
       }
-    } else { 
-      await interaction.reply({ content: 'You are not in the system yet, please use **/addme** and follow the command instructions to submit your name before redeeming any rewards!'});
+    } catch (error) {
+      console.log(error);
+      await interaction.editReply({ content: 'There was an error retrieving your rewards!' });
     }
+
+    //if has rewards, send them in select options
     if(rewardOptionsForMessage.length) {
       const select = new StringSelectMenuBuilder()
       .setCustomId('redeemrewardsid')
