@@ -5,11 +5,13 @@ module.exports = {
         "1008443594715173024", //#summon-heife
         "996637178694213672", //#bot-testing
         "996429651050246235", //#admin-chat
+        "1008443594715173024", //#staff-chat
       ],
 
       welcome_rules_links: "996428352443400213",
       announcements: "996428352443400214",
       admin_chat: "996429651050246235",
+      staff_chat: "1008443594715173024",
 
       acrc_chat: "996428352443400217",
       photos: "996430436823740476",
@@ -62,6 +64,93 @@ module.exports = {
       900: "$20 ACBC gift card",
       1000: "$20 ACBC gift card",
     },
+
+    blankMilestones: [
+      {
+        miles: 15,
+        earned: false,
+        spent: false,
+        text: "Sticker",
+      },
+      {
+        miles: 25,
+        earned: false,
+        spent: false,
+        text: "Glassware",
+      },
+      {
+        miles: 50,
+        earned: false,
+        spent: false,
+        text: "4-pack",
+      },
+      {
+        miles: 75,
+        earned: false,
+        spent: false,
+        text: "T-shirt",
+      },
+      {
+        miles: 100,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 200,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 300,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 400,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 500,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 600,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 700,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 800,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 900,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+      {
+        miles: 1000,
+        earned: false,
+        spent: false,
+        text: "$20 ACBC gift card",
+      },
+    ],
 
     mileageRoles: [],
 

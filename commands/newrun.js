@@ -98,17 +98,27 @@ module.exports = {
 				if(lifetimeSheet) {
 					const lifetimeRows = await lifetimeSheet.getRows();
 					let foundRecord = false;
-					//TODO: get rid of this loop and use util.getLifetimeMilesRow();
+
 					for(let i = 0; i < lifetimeRows.length; i++){
 						if(lifetimeRows[i].fname === fname && lifetimeRows[i].lname === lname) {
 							console.log('record found');
 							foundRecord = true;
-							lifetimeRows[i].lifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
+
+							// if their user id is not in the row yet (not used /addme but have submitted runs before using first name and last name)
+							if(!lifetimeRows[i].user_id) {
+								lifetimeRows[i].user_id = interaction.user.id;
+							}
+							const previousLifetime = parseFloat(lifetimeRows[i].lifetime);
+							const newLifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
+							lifetimeRows[i].lifetime = newLifetime;
 							lifetimeRows[i][sd.currentYear] = parseFloat(lifetimeRows[i][sd.currentYear]) + parseFloat(distance * sd.runData.multiplier);
-							const newRole = util.grantMileageTierRole(interaction, parseFloat(lifetimeRows[i].lifetime));
-							reply += newRole ? `Congrats! ${newRole} ` : '';
-							// TODO: send this to db: let rewards = JSON.stringify(sd.rewards);
-							// TODO: do this when getting rewards from db: let rewards = JSON.parse(lifetimeRows[i].milestones_available)
+							const newRole = util.grantMileageTierRole(interaction, parseFloat(newLifetime));
+							reply += newRole ? ` Congrats! ${newRole} ` : '';
+
+							//check rewards to grant
+							const rewards = util.grantRewards(previousLifetime, newLifetime, JSON.parse(lifetimeRows[i].milestones));
+							lifetimeRows[i].milestones = JSON.stringify(rewards);
+
 							await lifetimeRows[i].save();
 							break;
 						}
