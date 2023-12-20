@@ -22,7 +22,7 @@ module.exports = {
         for (let i = 0; i < lifetimeRows.length; i++) {
           const row = lifetimeRows[i];
           if (row.user_id === interaction.user.id) {
-            if(row.milestoes) {
+            if(row.milestones) {
               rewards = JSON.parse(row.milestones)
             } else {
               rewards = [];
