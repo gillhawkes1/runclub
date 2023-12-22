@@ -19,6 +19,7 @@ module.exports = {
 				{name: 'Lifetime', value: 'lifetime'},
 				{name: '2021-2022', value: 'y2'},
 				{name: '2022-2023', value: 'y3'},
+				{name: '2023-2024', value: 'y4'},
 			))
 		.addStringOption(option => 
             option.setName('name')
