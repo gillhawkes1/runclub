@@ -1,20 +1,20 @@
-# Use an official Node runtime as a parent image
+# use node v16
 FROM node:16
 
-# Set the working directory in the container
+# set working dir
 WORKDIR /Gill/workspace/runclub
 
-# Copy package.json and package-lock.json to the working directory
+# copy package.json and package-lock.json to working dir
 COPY package*.json ./
 
-# Install app dependencies
+# install node deps
 RUN npm install
 
 # Bundle app source
 COPY . .
 
-# Expose the port the app runs on
+# port
 EXPOSE 32773
 
-# Command to run your application
+# run heife
 CMD ["node", "index.js"]

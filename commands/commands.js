@@ -9,7 +9,7 @@ const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('allcommands')
+		.setName('commands')
 		.setDescription('Get bot commands and their descriptions.'),
 	async execute(interaction) {
 		try {
