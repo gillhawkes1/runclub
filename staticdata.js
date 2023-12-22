@@ -31,7 +31,7 @@ module.exports = {
       runSheetTitles: {},
     },
 
-    currentYear: "y3",
+    currentYear: "y4",
     years: {
       lifetime: "lifetime",
       y2: "2021-2022",
