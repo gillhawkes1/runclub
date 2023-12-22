@@ -9,7 +9,7 @@ const env = configfile.parsed;
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('commands')
+		.setName('allcommands')
 		.setDescription('Get bot commands and their descriptions.'),
 	async execute(interaction) {
 		try {
@@ -23,9 +23,9 @@ module.exports = {
 	getCommands(){
 		var commandsList = '';
 		const commands = [];
-		const commandsPath = path.join(env.ROOT_PATH, 'commands');
+		const commandsPath = __dirname;
 		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	
+
 		//build commands list
 		for (const file of commandFiles) {
 			const filePath = path.join(commandsPath, file);
