@@ -16,5 +16,9 @@ COPY . .
 # port
 EXPOSE 32773
 
+# health check
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:32773/ || exit 1
+
 # run heife
 CMD ["node", "index.js"]
