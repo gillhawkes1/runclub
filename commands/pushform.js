@@ -75,7 +75,7 @@ module.exports = {
                         await rows[i].save();
                         returnData.requests++;
                         returnData.records++;
-    
+
                         // get lifetime sheet and update yearly and lifetime miles. add them to sheet if they don't have a row yet
                         const lifetimeSheet = await util.getSheet(env.BOOK_RUN_TOTALS,'lifetime');
                         returnData.requests++;
@@ -92,6 +92,7 @@ module.exports = {
                                 user_id: '',
                                 fname: pushdata.fname,
                                 lname: pushdata.lname,
+                                milestones: sd.blankMilestones,
                                 lifetime: parseFloat(pushdata.distance * pushdata.multiplier),
                             }
                             newLifetimeRow[sd.currentYear] = parseFloat(pushdata.distance * pushdata.multiplier);

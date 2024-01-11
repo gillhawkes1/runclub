@@ -105,7 +105,7 @@ module.exports = {
 							foundRecord = true;
 
 							// if their user id is not in the row yet (not used /addme but have submitted runs before using first name and last name)
-							if(!lifetimeRows[i].user_id) {
+							if(!lifetimeRows[i].user_id || lifetimeRows[i].user_id === '') {
 								lifetimeRows[i].user_id = interaction.user.id;
 							}
 							const previousLifetime = parseFloat(lifetimeRows[i].lifetime);
