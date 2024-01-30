@@ -203,36 +203,39 @@ module.exports = {
         }
 	},
 
-	grantRewards(previousLifetime, newLifetime ,rewardsObjParsed) {
+	grantRewards(previousLifetime, newLifetime, rewardsObjParsed) {
 		try {
 			let rewardMiles = rewardsObjParsed.map((reward) => { return reward.miles });
-			const nextRewardObj = rewardsObjParsed.find((milesObj) => {
-				return newLifetime >= milesObj.miles && milesObj.earned === false;
-			});
+
+			//TODO: fix this code that is supposed to grant the new mileage obj. currently, ln 217 is true and it gives the next reward obj for any submitted run
+
+			// const nextRewardObj = rewardsObjParsed.find((milesObj) => {
+			// 	return newLifetime >= milesObj.miles && milesObj.earned === false;
+			// });
 
 			// if new reward is not currently in the array (default is 1000 miles, if they hit 1100 etc), add it to the array and return
-			if(!nextRewardObj) {
-				const newRewardTier = {
-					miles: rewardMiles[rewardMiles.length - 1] + 100,
-					earned: true,
-					spent: false,
-					text: "$20 ACBC gift card",
-				}
-				rewardsObjParsed.push(newRewardTier);
-				return rewardsObjParsed;
-			} else {
+			// if(!nextRewardObj) {
+			// 	const newRewardTier = {
+			// 		miles: rewardMiles[rewardMiles.length - 1] + 100,
+			// 		earned: true,
+			// 		spent: false,
+			// 		text: "$20 ACBC gift card",
+			// 	}
+			// 	rewardsObjParsed.push(newRewardTier);
+			// 	return rewardsObjParsed;
+			// } else {
 				//if new lifetime miles amount is greater than or equal to the next reward, grant it.
-				if((newLifetime >= rewardMiles[rewardMiles.indexOf(previousLifetime) + 1])) {
-					const rewardToGrantIndex = rewardMiles.indexOf(previousLifetime) + 1;
+			if((newLifetime >= rewardMiles[rewardMiles.indexOf(previousLifetime) + 1])) {
+				const rewardToGrantIndex = rewardMiles.indexOf(previousLifetime) + 1;
 
-					for(let reward of rewardsObjParsed) {
-						if(reward.miles === rewardMiles[rewardToGrantIndex]) {
-							reward.earned = true;
-						}
+				for(let reward of rewardsObjParsed) {
+					if(reward.miles === rewardMiles[rewardToGrantIndex]) {
+						reward.earned = true;
 					}
 				}
-				return rewardsObjParsed;
 			}
+			return rewardsObjParsed;
+			// }
 		} catch (error) {
 			console.log(error);
 			return rewardsObjParsed;
