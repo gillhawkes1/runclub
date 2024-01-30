@@ -23,5 +23,8 @@ HEALTHCHECK --interval=30s --timeout=3s \
 # run heife
 CMD ["node", "index.js"]
 
+
+#create new img:
+#docker build -t heife-img:<version number> .
 #restart policy:
 #docker update --restart=unless-stopped <container-name>
