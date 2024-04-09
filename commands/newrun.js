@@ -108,15 +108,15 @@ module.exports = {
 							if(!lifetimeRows[i].user_id || lifetimeRows[i].user_id === '') {
 								lifetimeRows[i].user_id = interaction.user.id;
 							}
-							const previousLifetime = parseFloat(lifetimeRows[i].lifetime);
 							const newLifetime = parseFloat(lifetimeRows[i].lifetime) + parseFloat(distance * sd.runData.multiplier);
+							const userRewardsObj = JSON.parse(lifetimeRows[i].milestones) || sd.blankMilestones;
 							lifetimeRows[i].lifetime = newLifetime;
 							lifetimeRows[i][sd.currentYear] = parseFloat(lifetimeRows[i][sd.currentYear]) + parseFloat(distance * sd.runData.multiplier);
 							const newRole = util.grantMileageTierRole(interaction, parseFloat(newLifetime));
 							reply += newRole ? ` Congrats! ${newRole} ` : '';
 
 							//check rewards to grant
-							const rewards = util.grantRewards(previousLifetime, newLifetime, JSON.parse(lifetimeRows[i].milestones));
+							const rewards = util.grantRewards(newLifetime, userRewardsObj);
 							lifetimeRows[i].milestones = JSON.stringify(rewards);
 
 							await lifetimeRows[i].save();
