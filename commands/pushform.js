@@ -92,7 +92,7 @@ module.exports = {
                                 user_id: '',
                                 fname: pushdata.fname,
                                 lname: pushdata.lname,
-                                milestones: sd.blankMilestones,
+                                milestones: JSON.stringify(sd.blankMilestones),
                                 lifetime: parseFloat(pushdata.distance * pushdata.multiplier),
                             }
                             newLifetimeRow[sd.currentYear] = parseFloat(pushdata.distance * pushdata.multiplier);
