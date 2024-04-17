@@ -19,7 +19,15 @@ module.exports = {
         for (let i = 0; i < lifetimeRows.length; i++) {
           const row = lifetimeRows[i];
           if (row.user_id === interaction.user.id) {
-            let myMilestones = JSON.parse(row.milestones);
+            let myMilestones;
+            //check for milestones in row, if no obj then grant them and save
+            if(row.milestones) {
+              myMilestones = JSON.parse(row.milestones);
+            } else {
+              row.milestones = JSON.stringify(util.grantRewards(row.lifetime, sd.blankMilestones));
+              await row.save();
+              myMilestones = JSON.parse(row.milestones);
+            }
             let rewardsMsg = `Lifetime miles: ${row.lifetime}\n`;
 
             for (const reward of myMilestones) {
