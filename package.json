@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@discordjs/rest": "^1.0.1",
-    "discord.js": "^14.0.3",
-    "dotenv": "^16.0.1",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
     "google-spreadsheet": "^3.3.0",
-    "handlebars": "^4.7.7",
-    "puppeteer": "^19.7.2"
+    "handlebars": "^4.7.8",
+    "puppeteer": "^19.11.1"
   }
 }
