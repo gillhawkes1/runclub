@@ -2,7 +2,7 @@
 FROM node:16
 
 # set working dir
-WORKDIR /Gill/workspace/runclub
+WORKDIR /gillh/workspace/runclub
 
 # copy package.json and package-lock.json to working dir
 COPY package*.json ./
