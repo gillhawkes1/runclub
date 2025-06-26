@@ -2,7 +2,7 @@
 FROM node:16
 
 # set working dir
-WORKDIR /gillh/workspace/runclub
+WORKDIR /Gill/workspace/runclub
 
 # copy package.json and package-lock.json to working dir
 COPY package*.json ./
@@ -13,8 +13,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# port
-EXPOSE 32773
 
 # health check
 HEALTHCHECK --interval=30s --timeout=3s \
