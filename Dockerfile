@@ -13,8 +13,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# port
-EXPOSE 32773
 
 # health check
 HEALTHCHECK --interval=30s --timeout=3s \
