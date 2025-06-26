@@ -15,6 +15,5 @@ COPY . .
 COPY entrypoint.sh /opt/discord-bots/heife/runclub/entrypoint.sh
 RUN chmod +x /opt/discord-bots/heife/runclub/entrypoint.sh
 
-
 # Use custom entrypoint instead of CMD
 ENTRYPOINT ["/opt/discord-bots/heife/runclub/entrypoint.sh"]
