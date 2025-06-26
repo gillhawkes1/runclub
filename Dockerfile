@@ -1,5 +1,5 @@
-# Use Node v16
-FROM node:16
+# Use Node v20
+FROM node:20
 
 # Set working directory inside the container
 WORKDIR /opt/discord-bots/heife/runclub
